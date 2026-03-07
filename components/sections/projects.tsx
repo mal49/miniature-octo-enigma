@@ -44,7 +44,7 @@ function BrowserCard({
           href={link}
           target="_blank"
           rel="noopener noreferrer"
-          className="self-start border border-black px-4 py-2 text-sm font-medium hover:bg-black hover:text-white transition-colors duration-150">
+          className="block w-full text-center md:inline-block md:w-auto border-2 border-black px-6 py-3 text-sm font-bold hover:bg-black hover:text-white transition-colors duration-150">
           View project
         </a>
       </div>

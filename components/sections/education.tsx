@@ -1,3 +1,5 @@
+import { TechStackCarousel } from "@/components/sections/tech-stack-carousel";
+
 const education = [
   {
     period: "2023 – current",
@@ -42,7 +44,7 @@ type EduItem = (typeof education)[number];
 function EduCard({ item }: { item: EduItem }) {
   return (
     <div className="border-2 border-black bg-white p-5">
-      <div className="flex items-start justify-between gap-2 mb-2">
+      <div className="flex flex-wrap items-start justify-between gap-x-2 gap-y-1 mb-2">
         <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">
           {item.type}
         </span>
@@ -51,16 +53,14 @@ function EduCard({ item }: { item: EduItem }) {
         </span>
       </div>
       <h3 className="text-lg font-black leading-tight mb-1">{item.degree}</h3>
-      <p className="text-sm font-semibold text-gray-700 mb-0.5">
-        {item.institution}
-      </p>
+      <p className="text-sm font-semibold text-gray-700 mb-0.5">{item.institution}</p>
       <p className="text-xs text-gray-400 mb-3">{item.location}</p>
       {item.gpa && <p className="text-xs font-bold mb-3">GPA: {item.gpa}</p>}
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-1">
         {item.highlights.map((h) => (
           <span
             key={h}
-            className="text-xs border border-black px-2 py-0.5 text-gray-600">
+            className="text-xs border border-black px-1.5 py-0.5 text-gray-600">
             {h}
           </span>
         ))}
@@ -75,24 +75,55 @@ export function TechStack() {
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-4xl md:text-5xl font-black mb-12">Education</h2>
 
-        {/* ── Mobile: left-spine timeline ── */}
-        <div className="md:hidden relative pl-10">
-          {/* spine line */}
-          <div className="absolute left-3.5 top-0 bottom-0 w-0.5 bg-black" />
-          <div className="space-y-8">
+        {/* ── Mobile: left-spine vertical stack ── */}
+        <div className="md:hidden relative pl-6">
+          {/* spine */}
+          <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-black" />
+
+          <div className="space-y-6">
             {education.map((item, i) => (
               <div key={i} className="relative">
                 {/* diamond node */}
-                <div className="absolute -left-[24px] top-[26px] w-3 h-3 bg-black rotate-45 z-10" />
+                <div className="absolute -left-[27px] top-4 w-3 h-3 border-2 border-black bg-white rotate-45" />
                 {/* horizontal connector */}
-                <div className="absolute -left-[18px] top-[28px] w-5 h-0.5 bg-black" />
-                <EduCard item={item} />
+                <div className="absolute -left-[15px] top-[21px] w-4 h-0.5 bg-black" />
+
+                <div className="border-2 border-black bg-white p-4">
+                  {/* type + period row */}
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">
+                      {item.type}
+                    </span>
+                    <span className="text-[10px] font-bold bg-black text-white px-2 py-0.5 whitespace-nowrap">
+                      {item.period}
+                    </span>
+                  </div>
+
+                  <h3 className="text-base font-black leading-tight mb-1">{item.degree}</h3>
+                  <p className="text-sm font-semibold text-gray-700 mb-0.5">{item.institution}</p>
+                  <p className="text-xs text-gray-400 mb-3">{item.location}</p>
+
+                  {item.gpa && (
+                    <p className="text-xs font-bold mb-3">GPA: {item.gpa}</p>
+                  )}
+
+                  <div className="flex flex-wrap gap-1.5">
+                    {item.highlights.map((h) => (
+                      <span
+                        key={h}
+                        className="text-[11px] border border-black px-2 py-0.5 text-gray-600"
+                      >
+                        {h}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* ── Desktop: fishbone — alternating left / right ── */}
+        {/* ── Desktop: fishbone alternating left / right ── */}
         <div className="hidden md:block relative">
           {/* vertical spine */}
           <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-black -translate-x-px" />
@@ -107,9 +138,7 @@ export function TechStack() {
 
                   {isRight ? (
                     <>
-                      {/* empty left half */}
                       <div className="w-1/2 pr-14" />
-                      {/* card + connector on right */}
                       <div className="w-1/2 pl-14 relative">
                         <div className="absolute left-0 top-[28px] w-14 h-0.5 bg-black" />
                         <EduCard item={item} />
@@ -117,12 +146,10 @@ export function TechStack() {
                     </>
                   ) : (
                     <>
-                      {/* card + connector on left */}
                       <div className="w-1/2 pr-14 relative">
                         <div className="absolute right-0 top-[28px] w-14 h-0.5 bg-black" />
                         <EduCard item={item} />
                       </div>
-                      {/* empty right half */}
                       <div className="w-1/2 pl-14" />
                     </>
                   )}
@@ -132,6 +159,9 @@ export function TechStack() {
           </div>
         </div>
       </div>
+
+      {/* Tech Stack Carousel — full-width, outside max-w container */}
+      <TechStackCarousel />
     </section>
   );
 }
