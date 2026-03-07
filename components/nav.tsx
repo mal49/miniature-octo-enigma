@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
@@ -24,7 +25,9 @@ export function Nav() {
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
   return (
@@ -32,16 +35,19 @@ export function Nav() {
       <header
         className={`sticky top-0 z-50 bg-white border-b-2 border-black transition-shadow duration-300 ${
           scrolled ? "shadow-[4px_4px_0px_0px_black]" : ""
-        }`}
-      >
+        }`}>
         <nav className="mx-auto max-w-5xl px-6 h-16 flex items-center justify-between">
-
           {/* Logo */}
           <a href="#" className="flex items-center gap-3 group shrink-0">
-            <div className="w-9 h-9 bg-black flex items-center justify-center group-hover:bg-white border-2 border-black transition-colors duration-200">
-              <span className="text-white text-sm font-black tracking-tight group-hover:text-black transition-colors duration-200">
-                IK
-              </span>
+            <div className="w-9 h-9 overflow-hidden bg-white shrink-0">
+              <Image
+                src="/me-cartoon-pic.svg"
+                alt="Ikhmal"
+                width={36}
+                height={36}
+                className="w-full h-full object-cover scale-110"
+                priority
+              />
             </div>
             <span className="hidden sm:block text-sm font-black tracking-widest uppercase">
               Ikhmal
@@ -54,8 +60,7 @@ export function Nav() {
               <a
                 key={link.label}
                 href={link.href}
-                className="relative px-4 py-2 text-sm font-bold overflow-hidden group"
-              >
+                className="relative px-4 py-2 text-sm font-bold overflow-hidden group">
                 {/* fill slides up on hover */}
                 <span className="absolute inset-0 bg-black -translate-y-full group-hover:translate-y-0 transition-transform duration-200 ease-in-out" />
                 <span className="relative z-10 text-black group-hover:text-white transition-colors duration-200">
@@ -69,8 +74,7 @@ export function Nav() {
           <div className="flex items-center gap-3">
             <a
               href="#contact"
-              className="hidden md:flex items-center gap-2 border-2 border-black px-4 py-1.5 text-sm font-bold bg-black text-white hover:bg-white hover:text-black transition-colors duration-200"
-            >
+              className="hidden md:flex items-center gap-2 border-2 border-black px-4 py-1.5 text-sm font-bold bg-black text-white hover:bg-white hover:text-black transition-colors duration-200">
               Let&apos;s Talk
               <span className="text-base leading-none">↗</span>
             </a>
@@ -78,8 +82,7 @@ export function Nav() {
             <button
               onClick={() => setMenuOpen(true)}
               className="md:hidden border-2 border-black p-1.5 hover:bg-black hover:text-white transition-colors duration-150"
-              aria-label="Open menu"
-            >
+              aria-label="Open menu">
               <Menu className="size-5" />
             </button>
           </div>
@@ -95,8 +98,7 @@ export function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-50 bg-black flex flex-col md:hidden"
-          >
+            className="fixed inset-0 z-50 bg-black flex flex-col md:hidden">
             {/* Top bar */}
             <div className="flex items-center justify-between px-6 h-16 border-b-2 border-white/20 shrink-0">
               <span className="text-white text-sm font-black tracking-widest uppercase">
@@ -105,8 +107,7 @@ export function Nav() {
               <button
                 onClick={() => setMenuOpen(false)}
                 className="border-2 border-white/30 p-1.5 text-white hover:border-white transition-colors"
-                aria-label="Close menu"
-              >
+                aria-label="Close menu">
                 <X className="size-5" />
               </button>
             </div>
@@ -120,9 +121,12 @@ export function Nav() {
                   onClick={() => setMenuOpen(false)}
                   initial={{ opacity: 0, x: -24 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.08 + i * 0.06, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="group flex items-baseline gap-5 py-5 border-b border-white/10 last:border-0"
-                >
+                  transition={{
+                    delay: 0.08 + i * 0.06,
+                    duration: 0.3,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="group flex items-baseline gap-5 py-5 border-b border-white/10 last:border-0">
                   <span className="text-white/30 text-xs font-bold tabular-nums w-5 shrink-0">
                     0{i + 1}
                   </span>
