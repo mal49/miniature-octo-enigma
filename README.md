@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Developer Portfolio
+
+A modern, minimal developer portfolio built with **Next.js 16**, **TailwindCSS v4**, **shadcn/ui**, and **Framer Motion**.
+
+## Features
+
+- 🌗 Dark / light mode toggle (no flash on load)
+- 🎞 Framer Motion entrance & hover animations (respects `prefers-reduced-motion`)
+- 📱 Fully responsive, mobile-first layout
+- 🔍 SEO metadata + Open Graph tags
+- ♿ Accessible navigation with ARIA labels
+- ⚡ Static export — fast loading on Vercel / Cloudflare
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+/
+├── app/
+│   ├── layout.tsx         # Root layout with metadata & theme script
+│   ├── page.tsx           # Page — assembles all sections
+│   └── globals.css        # Tailwind + shadcn CSS variables
+├── components/
+│   ├── nav.tsx            # Sticky navigation with mobile menu
+│   ├── footer.tsx         # Footer with copyright
+│   ├── theme-toggle.tsx   # Dark/light theme button
+│   ├── motion-section.tsx # Framer Motion scroll wrapper
+│   ├── sections/
+│   │   ├── hero.tsx       # Hero section
+│   │   ├── about.tsx      # About + skills
+│   │   ├── projects.tsx   # Project cards
+│   │   ├── tech-stack.tsx # Technology grid
+│   │   └── contact.tsx    # Contact + social links
+│   └── ui/                # shadcn/ui primitives (button, card, badge)
+├── data/
+│   └── projects.ts        # Project data — edit this to add projects
+└── lib/
+    └── utils.ts           # Utility helpers (cn)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Personalizing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1. Update your name & tagline
+Edit `components/sections/hero.tsx` — replace `"Your Name"` and update the tagline paragraph.
 
-## Deploy on Vercel
+### 2. Add or edit projects
+Open `data/projects.ts` and edit the `projects` array:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```ts
+{
+  id: "my-project",
+  title: "My Project",
+  description: "A short description of the project.",
+  tech: ["Next.js", "TypeScript", "Postgres"],
+  github: "https://github.com/yourusername/my-project",
+  demo: "https://my-project.vercel.app",
+  gradient: "from-violet-500/20 via-purple-500/10 to-transparent",
+  featured: true, // shows "Featured" badge
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Update contact info
+Edit `components/sections/contact.tsx` — update `PLACEHOLDER_EMAIL` and the `socials` array with your real links.
+
+### 4. Update metadata & Open Graph
+Edit `app/layout.tsx` — update `metadataBase`, `title`, `description`, and Open Graph fields with your real domain.
+
+### 5. Add an OG image
+Place a `1200×630` PNG at `public/og-image.png` for social sharing previews.
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| [Next.js 16](https://nextjs.org) | App Router, SSG |
+| [TailwindCSS v4](https://tailwindcss.com) | Styling |
+| [shadcn/ui](https://ui.shadcn.com) | UI primitives |
+| [Framer Motion](https://www.framer.com/motion/) | Animations |
+| [Lucide React](https://lucide.dev) | Icons |
+| [TypeScript](https://www.typescriptlang.org) | Type safety |
