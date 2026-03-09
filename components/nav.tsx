@@ -133,9 +133,7 @@ export function Nav() {
                   <span className="text-4xl font-black text-white group-hover:translate-x-2 transition-transform duration-200 inline-block">
                     {link.label}
                   </span>
-                  <span className="ml-auto text-white/30 group-hover:text-white transition-colors text-xl shrink-0">
-                    ↗
-                  </span>
+                  <ArrowUpRight />
                 </motion.a>
               ))}
             </nav>
