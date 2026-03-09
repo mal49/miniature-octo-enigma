@@ -126,14 +126,14 @@ export function Nav() {
                     duration: 0.3,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="group flex items-baseline gap-5 py-5 border-b border-white/10 last:border-0">
+                  className="group flex items-center gap-5 py-5 border-b border-white/10 last:border-0">
                   <span className="text-white/30 text-xs font-bold tabular-nums w-5 shrink-0">
                     0{i + 1}
                   </span>
-                  <span className="text-4xl font-black text-white group-hover:translate-x-2 transition-transform duration-200 inline-block">
+                  <span className="text-4xl font-black text-white group-hover:translate-x-2 transition-transform duration-200 inline-block flex-1">
                     {link.label}
                   </span>
-                  <ArrowUpRight />
+                  <ArrowUpRight className="size-5 text-white/50 shrink-0" />
                 </motion.a>
               ))}
             </nav>
