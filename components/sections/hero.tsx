@@ -27,7 +27,7 @@ export function Hero() {
         </div>
 
         {/* Right: Retro illustration */}
-        <div className="flex-shrink-0 w-40 h-48 sm:w-52 sm:h-60 md:w-72 md:h-80">
+        <div className="shrink-0 w-40 h-48 sm:w-52 sm:h-60 md:w-72 md:h-80">
           <RetroIllustration />
         </div>
       </div>
