@@ -53,7 +53,9 @@ function EduCard({ item }: { item: EduItem }) {
         </span>
       </div>
       <h3 className="text-lg font-black leading-tight mb-1">{item.degree}</h3>
-      <p className="text-sm font-semibold text-gray-700 mb-0.5">{item.institution}</p>
+      <p className="text-sm font-semibold text-gray-700 mb-0.5">
+        {item.institution}
+      </p>
       <p className="text-xs text-gray-400 mb-3">{item.location}</p>
       {item.gpa && <p className="text-xs font-bold mb-3">GPA: {item.gpa}</p>}
       <div className="flex flex-wrap gap-1">
@@ -84,9 +86,9 @@ export function TechStack() {
             {education.map((item, i) => (
               <div key={i} className="relative">
                 {/* diamond node */}
-                <div className="absolute -left-[27px] top-4 w-3 h-3 border-2 border-black bg-white rotate-45" />
+                <div className="absolute -left-6.75 top-4 w-3 h-3 border-2 border-black bg-white rotate-45" />
                 {/* horizontal connector */}
-                <div className="absolute -left-[15px] top-[21px] w-4 h-0.5 bg-black" />
+                <div className="absolute -left-3.75 top-5.25 w-4 h-0.5 bg-black" />
 
                 <div className="border-2 border-black bg-white p-4">
                   {/* type + period row */}
@@ -99,8 +101,12 @@ export function TechStack() {
                     </span>
                   </div>
 
-                  <h3 className="text-base font-black leading-tight mb-1">{item.degree}</h3>
-                  <p className="text-sm font-semibold text-gray-700 mb-0.5">{item.institution}</p>
+                  <h3 className="text-base font-black leading-tight mb-1">
+                    {item.degree}
+                  </h3>
+                  <p className="text-sm font-semibold text-gray-700 mb-0.5">
+                    {item.institution}
+                  </p>
                   <p className="text-xs text-gray-400 mb-3">{item.location}</p>
 
                   {item.gpa && (
@@ -111,8 +117,7 @@ export function TechStack() {
                     {item.highlights.map((h) => (
                       <span
                         key={h}
-                        className="text-[11px] border border-black px-2 py-0.5 text-gray-600"
-                      >
+                        className="text-[11px] border border-black px-2 py-0.5 text-gray-600">
                         {h}
                       </span>
                     ))}
@@ -134,20 +139,20 @@ export function TechStack() {
               return (
                 <div key={i} className="relative flex items-start">
                   {/* diamond node on spine */}
-                  <div className="absolute left-1/2 top-[26px] w-4 h-4 border-2 border-black bg-white rotate-45 -translate-x-1/2 z-10" />
+                  <div className="absolute left-1/2 top-6.5 w-4 h-4 border-2 border-black bg-white rotate-45 -translate-x-1/2 z-10" />
 
                   {isRight ? (
                     <>
                       <div className="w-1/2 pr-14" />
                       <div className="w-1/2 pl-14 relative">
-                        <div className="absolute left-0 top-[28px] w-14 h-0.5 bg-black" />
+                        <div className="absolute left-0 top-7 w-14 h-0.5 bg-black" />
                         <EduCard item={item} />
                       </div>
                     </>
                   ) : (
                     <>
                       <div className="w-1/2 pr-14 relative">
-                        <div className="absolute right-0 top-[28px] w-14 h-0.5 bg-black" />
+                        <div className="absolute right-0 top-7 w-14 h-0.5 bg-black" />
                         <EduCard item={item} />
                       </div>
                       <div className="w-1/2 pl-14" />

@@ -31,7 +31,7 @@ function BrowserCard({
         {image ? (
           <img src={image} alt={title} className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-zinc-300 to-zinc-400" />
+          <div className="w-full h-full bg-linear-to-br from-zinc-300 to-zinc-400" />
         )}
       </div>
       {/* Content */}
