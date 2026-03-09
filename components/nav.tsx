@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "Projects", href: "#projects" },
@@ -76,7 +76,7 @@ export function Nav() {
               href="#contact"
               className="hidden md:flex items-center gap-2 border-2 border-black px-4 py-1.5 text-sm font-bold bg-black text-white hover:bg-white hover:text-black transition-colors duration-200">
               Let&apos;s Talk
-              <span className="text-base leading-none">↗</span>
+              <ArrowUpRight />
             </a>
 
             <button
