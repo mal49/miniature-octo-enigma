@@ -27,9 +27,13 @@ function BrowserCard({
         </span>
       </div>
       {/* Image */}
-      <div className="h-44 bg-zinc-200 border-b-2 border-black overflow-hidden">
+      <div className="h-52 bg-white border-b-2 border-black overflow-hidden">
         {image ? (
-          <img src={image} alt={title} className="w-full h-full object-cover" />
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-contain"
+          />
         ) : (
           <div className="w-full h-full bg-linear-to-br from-zinc-300 to-zinc-400" />
         )}
@@ -63,6 +67,7 @@ export function Projects() {
               key={project.id}
               title={project.title}
               filename={`${project.id}`}
+              image={project.image}
               description={project.description}
               link={project.demo}
             />

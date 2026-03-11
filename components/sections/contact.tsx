@@ -1,4 +1,4 @@
-import { Mail, Github, Linkedin } from "lucide-react";
+import { Mail, Github, Linkedin, Phone } from "lucide-react";
 
 export function Contact() {
   return (
@@ -16,6 +16,15 @@ export function Contact() {
             className="inline-flex items-center gap-2 border-2 border-black bg-black text-white px-5 py-3 text-sm font-bold hover:bg-white hover:text-black transition-colors duration-150">
             <Mail className="size-4" />
             ikhmalhanif60@gmail
+          </a>
+
+          <a
+            href="https://wa.me/60128176934"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 border-2 border-black px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition-colors duration-150">
+            <Phone className="size-4" />
+            WhatsApp
           </a>
 
           <a
