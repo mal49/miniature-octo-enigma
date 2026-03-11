@@ -10,7 +10,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yourname.dev"),
+  metadataBase: new URL("https://ikhmalhanif.xyz"),
   title: {
     default: "Ikhmal — Developer & Designer",
     template: "%s | Your Name",
