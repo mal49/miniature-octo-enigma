@@ -7,7 +7,7 @@ const education = [
     degree: "Bachelor of Computer Science",
     institution: "Universiti Teknologi MARA (UiTM)",
     location: "Shah Alam, Malaysia",
-    gpa: "3.78 / 4.00",
+    gpa: "3.09 / 4.00",
     highlights: [
       "Software Engineering",
       "Data Structures & Algorithms",
@@ -21,11 +21,11 @@ const education = [
     degree: "Diploma in Electrical Engineering (Electronics)",
     institution: "Universiti Teknologi MARA (UiTM)",
     location: "Sarawak, Malaysia",
-    gpa: "3.90 / 4.00",
+    gpa: "3.24 / 4.00",
     highlights: [
-      "Programming Fundamentals",
-      "System Analysis & Design",
-      "Computer Networking",
+      "Analog & Digital Electronics",
+      "Microcontroller Systems",
+      "Electronic Circuit Design",
     ],
   },
   {
@@ -35,7 +35,7 @@ const education = [
     institution: "SMK Rancha-Rancha",
     location: "W.P. Labuan, Malaysia",
     gpa: undefined,
-    highlights: ["Additional Mathematics", "Physics", "Information Technology"],
+    highlights: ["Additional Mathematics", "Physics", "Chemestry"],
   },
 ];
 
