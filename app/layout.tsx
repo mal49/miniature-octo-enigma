@@ -25,12 +25,20 @@ export const metadata: Metadata = {
     "TypeScript",
     "Node.js",
   ],
-  authors: [{ name: "Ikhmal Hanif", url: "https://yourname.dev" }],
+  authors: [{ name: "Ikhmal Hanif", url: "https://ikhmalhanif.xyz" }],
   creator: "Ikhmal Hanif",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://yourname.dev",
+    url: "https://ikhmalhanif.xyz",
+    images: [
+      {
+        url: "/me-cartoon-pic.png",
+        width: 1024,
+        height: 1024,
+        alt: "Ikhmal Hanif",
+      },
+    ],
     title: "Ikhmal — Developer & Designer",
     description:
       "Full stack developer building modern, user-centered web experiences.",
@@ -42,6 +50,7 @@ export const metadata: Metadata = {
     description:
       "Full stack developer building modern, user-centered web experiences.",
     creator: "@yourtwitterhandle",
+    images: ["/me-cartoon-pic.png"],
   },
   robots: {
     index: true,
