@@ -35,7 +35,7 @@ const education = [
     institution: "SMK Rancha-Rancha",
     location: "W.P. Labuan, Malaysia",
     gpa: undefined,
-    highlights: ["Additional Mathematics", "Physics", "Chemestry"],
+    highlights: ["Additional Mathematics", "Physics", "Chemistry"],
   },
 ];
 
