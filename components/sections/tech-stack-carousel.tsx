@@ -38,7 +38,7 @@ function MarqueeRow({
   // Quadruple to ensure no gaps at any viewport width
   const track = [...items, ...items, ...items, ...items];
   return (
-    <div className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
+    <div className="overflow-hidden mask-[linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
       <div
         className={`flex gap-3 w-max ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}
         style={{ "--marquee-duration": duration } as React.CSSProperties}>
