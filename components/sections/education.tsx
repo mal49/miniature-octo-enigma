@@ -7,7 +7,7 @@ const education = [
     degree: "Bachelor of Computer Science",
     institution: "Universiti Teknologi MARA (UiTM)",
     location: "Shah Alam, Malaysia",
-    gpa: "3.09 / 4.00",
+    gpa: "3.19 / 4.00",
     highlights: [
       "Software Engineering",
       "Data Structures & Algorithms",
