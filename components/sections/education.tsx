@@ -110,7 +110,7 @@ export function TechStack() {
                   <p className="text-xs text-gray-400 mb-3">{item.location}</p>
 
                   {item.gpa && (
-                    <p className="text-xs font-bold mb-3">GPA: {item.gpa}</p>
+                    <p className="text-xs font-bold mb-3">CGPA: {item.gpa}</p>
                   )}
 
                   <div className="flex flex-wrap gap-1.5">
