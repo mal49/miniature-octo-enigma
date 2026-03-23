@@ -57,7 +57,7 @@ function EduCard({ item }: { item: EduItem }) {
         {item.institution}
       </p>
       <p className="text-xs text-gray-400 mb-3">{item.location}</p>
-      {item.gpa && <p className="text-xs font-bold mb-3">GPA: {item.gpa}</p>}
+      {item.gpa && <p className="text-xs font-bold mb-3">CGPA: {item.gpa}</p>}
       <div className="flex flex-wrap gap-1">
         {item.highlights.map((h) => (
           <span
