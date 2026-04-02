@@ -24,11 +24,22 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    id: "UiTM Schedule",
+    title: "UiTM Schedule",
+    description:
+      "A simple, modern web app that lets UiTM students search their class schedules, organize subject groups, and export their final timetable as a clean, customizable phone wallpaper.",
+    tech: ["Next.js", "Next Router", "TypeScript"],
+    github: "https://github.com/mal49/uitm-timetable",
+    demo: "https://uitm-timetable.vercel.app/",
+    image: "/projects/uitm-schedule.jpg",
+    gradient: "from-orange-500/20 via-amber-500/10 to-transparent",
+  },
+  {
     id: "confession-app",
     title: "ceritaAnon A Confession Platform",
     description:
       "A full-stack anonymous confession platform with secure post submissions, automated moderation workflows, and a scalable architecture for handling community-driven content.",
-    tech: ["React", "Node.js", "Socket.io", "MongoDB", "TailwindCSS"],
+    tech: ["React", "Node.js", "cloudflare", "SQLite", "TailwindCSS"],
     github: "https://github.com/mal49/confession-app",
     demo: "https://ceritaAnon.xyz",
     image: "/projects/cerita-Anon-sc.png",
@@ -51,7 +62,7 @@ export const projects: Project[] = [
     title: "Simple Weather App",
     description:
       "A lightweight weather application that fetches real-time weather data via API, featuring location search and a responsive interface for quickly viewing current conditions and forecasts.",
-    tech: ["Node.js", "Express", "Redis", "Docker", "TypeScript"],
+    tech: ["Next.js", "TypeScript"],
     github: "https://github.com/mal49/simple-weather-app",
     demo: "https://simple-weather-app-sigma-nine.vercel.app/",
     image: "/projects/simple-weather-app.png",
