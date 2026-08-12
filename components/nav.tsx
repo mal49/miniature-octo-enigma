@@ -61,16 +61,16 @@ export function Nav() {
         style={{ transform: "translateY(-100%)", opacity: 0, visibility: "hidden" }}
       >
         <nav className="mx-auto max-w-5xl px-6 h-16 flex items-center justify-between">
-          {/* Logo — the illustration is white-ground line art, so it keeps a
-              light chip rather than being inverted. */}
+          {/* Logo — black-ink mark, so it keeps a light chip rather than being
+              inverted. */}
           <a href="#hero" className="flex items-center gap-3 group shrink-0">
             <div className="w-9 h-9 overflow-hidden bg-[#F2F0EB] shrink-0">
               <Image
-                src="/me-cartoon-pic.svg"
+                src="/neko-labz.png"
                 alt="Neko Labz"
                 width={36}
                 height={36}
-                className="w-full h-full object-cover scale-110"
+                className="w-full h-full object-contain p-1"
                 priority
               />
             </div>
@@ -168,7 +168,7 @@ export function Nav() {
 
             {/* Footer note */}
             <div className="px-8 pb-10 text-foreground/20 text-[10px] font-bold tracking-widest uppercase">
-              Neko Labz — {new Date().getFullYear()}
+              Neko Labz · {new Date().getFullYear()}
             </div>
           </motion.div>
         )}

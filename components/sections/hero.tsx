@@ -69,6 +69,7 @@ export function Hero({ src, poster }: { src?: string; poster?: string }) {
   const tensRef = useRef<HTMLDivElement>(null);
   const unitsRef = useRef<HTMLDivElement>(null);
   const mediaWrapRef = useRef<HTMLDivElement>(null);
+  const markRef = useRef<HTMLImageElement>(null);
   const headLeftRef = useRef<HTMLSpanElement>(null);
   const headRightRef = useRef<HTMLSpanElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
@@ -215,6 +216,15 @@ export function Hero({ src, poster }: { src?: string; poster?: string }) {
             "[data-hero-label]:not([data-hero-nav])",
             { autoAlpha: 0, ease: "none" },
             0
+          )
+          // The mark surfaces in the gap the two words leave behind.
+          .fromTo(
+            markRef.current,
+            // Centering lives here, not in a Tailwind -translate: GSAP owns the
+            // transform once it animates scale.
+            { autoAlpha: 0, scale: 0.55, xPercent: -50, yPercent: -50 },
+            { autoAlpha: 1, scale: 1, xPercent: -50, yPercent: -50, ease: "none" },
+            0
           );
         if (mediaWrapRef.current) {
           scrub.to(
@@ -311,6 +321,7 @@ export function Hero({ src, poster }: { src?: string; poster?: string }) {
             ]}
             reelRef={unitsRef}
           />
+          <span className="ml-[0.08em] text-[0.5em] leading-[1em]">%</span>
         </div>
         <span
           ref={barRef}
@@ -395,16 +406,31 @@ export function Hero({ src, poster }: { src?: string; poster?: string }) {
             data-hero-label
             className="hidden shrink-0 font-mono text-[9px] uppercase tracking-[0.25em] sm:block"
           >
-            Web Studio
+            Full Stack
           </span>
 
-          <div className="flex flex-1 flex-col items-center">
+          <div className="relative flex flex-1 flex-col items-center">
+            {/* Revealed in the gap the pin-scrub opens between the two words.
+                eslint-disable: a plain img keeps GSAP's transform off next/image's
+                wrapper. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              ref={markRef}
+              src="/neko-labz.png"
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-1/2 -z-10 hidden w-[min(22vw,16rem)] opacity-0 md:block"
+            />
+
             <h1 className="flex justify-center gap-[0.22em] whitespace-nowrap font-display text-[clamp(4rem,11vw,12rem)] font-semibold leading-[0.85] tracking-[-0.03em]">
               <span ref={headLeftRef} className="block">
                 Neko
               </span>
               <span ref={headRightRef} className="block">
                 Labz
+                <span className="ml-[0.06em] align-baseline font-mono text-[0.1em] font-medium uppercase tracking-[0.2em]">
+                  Solutions
+                </span>
               </span>
             </h1>
             <p
@@ -429,7 +455,7 @@ export function Hero({ src, poster }: { src?: string; poster?: string }) {
             ref={taglineRef}
             className="font-mono text-[9px] uppercase leading-[1.9] tracking-[0.25em]"
           >
-            Web Studio
+            Developer
             <br />
             Kuala Lumpur
           </p>

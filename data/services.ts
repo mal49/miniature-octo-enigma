@@ -14,7 +14,7 @@ export const services: Service[] = [
     id: "web",
     title: "Web apps & sites",
     blurb:
-      "Custom builds in Next.js and React — from a one-page launch site to a full internal dashboard.",
+      "Custom builds in Next.js and React, from a one-page launch site to a full internal dashboard.",
     points: [
       "Marketing sites, landing pages, company profiles",
       "Dashboards, booking systems, admin panels",

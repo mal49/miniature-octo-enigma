@@ -2,7 +2,7 @@ export function Grain() {
   return (
     <svg
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[60] h-full w-full opacity-[0.04] mix-blend-overlay"
+      className="pointer-events-none fixed inset-0 z-[60] h-full w-full opacity-[0.05] mix-blend-multiply"
     >
       <filter id="grain-noise">
         <feTurbulence

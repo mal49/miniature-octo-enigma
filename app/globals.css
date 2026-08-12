@@ -29,26 +29,26 @@
 }
 
 :root {
-  --background: #0b0b0b;
-  --foreground: #f2f0eb;
-  --card: #121212;
-  --card-foreground: #f2f0eb;
-  --popover: #121212;
-  --popover-foreground: #f2f0eb;
-  --primary: #f2f0eb;
-  --primary-foreground: #0b0b0b;
-  --secondary: #1a1a1a;
-  --secondary-foreground: #f2f0eb;
-  --muted: #1a1a1a;
-  --muted-foreground: #8a8a85;
-  --accent: #1a1a1a;
-  --accent-foreground: #f2f0eb;
-  --destructive: #ff6b6b;
+  --background: #f2f0eb;
+  --foreground: #0b0b0b;
+  --card: #ffffff;
+  --card-foreground: #0b0b0b;
+  --popover: #ffffff;
+  --popover-foreground: #0b0b0b;
+  --primary: #0b0b0b;
+  --primary-foreground: #f2f0eb;
+  --secondary: #e6e3da;
+  --secondary-foreground: #0b0b0b;
+  --muted: #e9e6dd;
+  --muted-foreground: #6b675f;
+  --accent: #e6e3da;
+  --accent-foreground: #0b0b0b;
+  --destructive: #c0392b;
   /* Every border in this design is the brutalist 2px outline, not a hairline,
      so --border tracks the foreground. */
-  --border: #f2f0eb;
-  --input: #2a2a2a;
-  --ring: #f2f0eb;
+  --border: #0b0b0b;
+  --input: #d8d4c9;
+  --ring: #0b0b0b;
   --radius: 0rem;
 }
 

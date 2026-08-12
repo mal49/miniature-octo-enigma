@@ -9,7 +9,7 @@ export function Contact() {
         </h2>
         <p className="text-base text-muted-foreground max-w-md mb-8 leading-relaxed">
           Tell me what you&apos;re building, roughly when you need it, and the
-          budget you have in mind — I&apos;ll come back with a quote and a
+          budget you have in mind. I&apos;ll come back with a quote and a
           timeline.
         </p>
 

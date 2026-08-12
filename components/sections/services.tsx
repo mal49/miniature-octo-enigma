@@ -8,7 +8,7 @@ export function Services() {
         <h2 className="text-4xl md:text-5xl font-black mb-4">Services</h2>
         <p className="text-base text-muted-foreground max-w-lg mb-10 leading-relaxed">
           Neko Labz builds and looks after the web side of small businesses in
-          Malaysia — design, build, payments, and the upkeep afterwards.
+          Malaysia: design, build, payments, and the upkeep afterwards.
         </p>
 
         <div className="grid sm:grid-cols-2 gap-6">
@@ -32,7 +32,7 @@ export function Services() {
                 {points.map((point) => (
                   <li key={point} className="flex gap-2">
                     <span aria-hidden className="text-muted-foreground">
-                      —
+                      ·
                     </span>
                     <span>{point}</span>
                   </li>
@@ -44,7 +44,7 @@ export function Services() {
 
         <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4">
           <p className="text-sm text-muted-foreground flex-1">
-            Every project is quoted after a short call — no fixed packages.
+            Every project is quoted after a short call. No fixed packages.
           </p>
           <a
             href="#contact"

@@ -29,11 +29,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://ikhmalhanif.xyz"),
   title: {
-    default: "Neko Labz — Web Development Studio, Malaysia",
+    default: "Neko Labz · Full-Stack Web Development, Malaysia",
     template: "%s | Neko Labz",
   },
   description:
-    "Neko Labz builds web apps, online stores and payment integrations for small businesses in Malaysia. A one-person studio run by Ikhmal Hanif.",
+    "Neko Labz builds web apps, online stores and payment integrations for small businesses in Malaysia. Full-stack development by Ikhmal Hanif.",
   keywords: [
     "Web development Malaysia",
     "Web design Kuala Lumpur",
@@ -51,23 +51,23 @@ export const metadata: Metadata = {
     url: "https://ikhmalhanif.xyz",
     images: [
       {
-        url: "/me-cartoon-pic.png",
-        width: 1024,
-        height: 1024,
+        url: "/neko-labz-og.png",
+        width: 1200,
+        height: 630,
         alt: "Neko Labz",
       },
     ],
-    title: "Neko Labz — Web Development Studio, Malaysia",
+    title: "Neko Labz · Full-Stack Web Development, Malaysia",
     description:
       "Web apps, online stores and payment integrations for small businesses in Malaysia.",
     siteName: "Neko Labz",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Neko Labz — Web Development Studio, Malaysia",
+    title: "Neko Labz · Full-Stack Web Development, Malaysia",
     description:
       "Web apps, online stores and payment integrations for small businesses in Malaysia.",
-    images: ["/me-cartoon-pic.png"],
+    images: ["/neko-labz-og.png"],
   },
   robots: {
     index: true,

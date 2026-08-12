@@ -20,6 +20,12 @@ export function Cursor() {
 
     const xTo = gsap.quickTo(dot, "x", { duration: 0.3, ease: "power3.out" });
     const yTo = gsap.quickTo(dot, "y", { duration: 0.3, ease: "power3.out" });
+    // quickTo, not gsap.to with overwrite — an overwriting tween on this element
+    // kills the x/y quickTos too, which froze the dot on the first link hover.
+    const scaleTo = gsap.quickTo(dot, "scale", {
+      duration: 0.4,
+      ease: "expo.out",
+    });
 
     let shown = false;
     const onMove = (e: PointerEvent) => {
@@ -40,12 +46,7 @@ export function Cursor() {
       const next = (e.target as Element)?.closest?.(INTERACTIVE) ?? null;
       if (next === hovered) return;
       hovered = next;
-      gsap.to(dot, {
-        scale: next ? 3.2 : 1,
-        duration: 0.4,
-        ease: "expo.out",
-        overwrite: true,
-      });
+      scaleTo(next ? 3.2 : 1);
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });

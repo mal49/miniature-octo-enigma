@@ -15,10 +15,10 @@ export function About() {
     >
       <div className="mx-auto max-w-5xl px-6">
         <p className="text-base max-w-xl mb-8 leading-relaxed">
-          <span className="font-semibold">Neko Labz</span> is a one-person web
-          studio in Kuala Lumpur, run by Ikhmal Hanif. I take small business
-          projects end to end — design, build, payments, launch — and stay on
-          afterwards to keep them running.
+          I&apos;m Ikhmal Hanif, a full-stack developer in Kuala Lumpur working
+          under <span className="font-semibold">Neko Labz</span>. I take small
+          business projects end to end: design, build, payments and launch, then
+          stay on afterwards to keep them running.
         </p>
 
         <p className="text-xs font-semibold text-muted-foreground mb-4 tracking-widest uppercase">
