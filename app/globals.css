@@ -5,6 +5,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-space-grotesk);
+  --font-display: var(--font-inter-tight);
+  --font-mono: var(--font-jetbrains-mono);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -27,24 +29,26 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --card: #ffffff;
-  --card-foreground: #0a0a0a;
-  --popover: #ffffff;
-  --popover-foreground: #0a0a0a;
-  --primary: #0a0a0a;
-  --primary-foreground: #ffffff;
-  --secondary: #f4f4f4;
-  --secondary-foreground: #0a0a0a;
-  --muted: #f4f4f4;
-  --muted-foreground: #6b6b6b;
-  --accent: #f4f4f4;
-  --accent-foreground: #0a0a0a;
-  --destructive: #c00000;
-  --border: #0a0a0a;
-  --input: #e0e0e0;
-  --ring: #0a0a0a;
+  --background: #0b0b0b;
+  --foreground: #f2f0eb;
+  --card: #121212;
+  --card-foreground: #f2f0eb;
+  --popover: #121212;
+  --popover-foreground: #f2f0eb;
+  --primary: #f2f0eb;
+  --primary-foreground: #0b0b0b;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #f2f0eb;
+  --muted: #1a1a1a;
+  --muted-foreground: #8a8a85;
+  --accent: #1a1a1a;
+  --accent-foreground: #f2f0eb;
+  --destructive: #ff6b6b;
+  /* Every border in this design is the brutalist 2px outline, not a hairline,
+     so --border tracks the foreground. */
+  --border: #f2f0eb;
+  --input: #2a2a2a;
+  --ring: #f2f0eb;
   --radius: 0rem;
 }
 
@@ -64,8 +68,12 @@
 
 /* Dot pattern background used by the Projects section */
 .dot-bg {
-  background-color: #d4d4d4;
-  background-image: radial-gradient(circle, #999 1.5px, transparent 1.5px);
+  background-color: var(--muted);
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--foreground) 18%, transparent) 1.5px,
+    transparent 1.5px
+  );
   background-size: 20px 20px;
 }
 
@@ -73,9 +81,7 @@
   * {
     box-sizing: border-box;
   }
-  html {
-    scroll-behavior: smooth;
-  }
+  /* No `scroll-behavior: smooth` — Lenis owns scrolling and the two fight. */
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-space-grotesk, system-ui, sans-serif);

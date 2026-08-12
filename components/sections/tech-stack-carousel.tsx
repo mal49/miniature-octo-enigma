@@ -45,7 +45,7 @@ function MarqueeRow({
         {track.map((tech, i) => (
           <span
             key={i}
-            className="border-2 border-black px-4 py-2 text-sm font-bold whitespace-nowrap bg-white hover:bg-black hover:text-white transition-colors duration-150 cursor-default select-none">
+            className="border-2 border-foreground px-4 py-2 text-sm font-bold whitespace-nowrap bg-background hover:bg-foreground hover:text-background transition-colors duration-150 cursor-default select-none">
             {tech}
           </span>
         ))}
@@ -56,12 +56,12 @@ function MarqueeRow({
 
 export function TechStackCarousel() {
   return (
-    <div className="mt-16 md:mt-20 border-t-2 border-black pt-12">
+    <div className="mt-16 md:mt-20 border-t-2 border-foreground pt-12">
       {/* Header */}
       <div className="flex justify-center gap-4 mb-8 px-6 max-w-5xl mx-auto">
-        <div className="flex-1 h-0.5 bg-black mt-6" />
+        <div className="flex-1 h-0.5 bg-foreground mt-6" />
         <h2 className="text-4xl md:text-5xl font-black shrink-0">Tech Stack</h2>
-        <div className="flex-1 h-0.5 bg-black mt-6" />
+        <div className="flex-1 h-0.5 bg-foreground mt-6" />
       </div>
 
       {/* Two rows scrolling in opposite directions */}

@@ -43,26 +43,26 @@ type EduItem = (typeof education)[number];
 
 function EduCard({ item }: { item: EduItem }) {
   return (
-    <div className="border-2 border-black bg-white p-5">
+    <div className="border-2 border-foreground bg-background p-5">
       <div className="flex flex-wrap items-start justify-between gap-x-2 gap-y-1 mb-2">
-        <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">
+        <span className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">
           {item.type}
         </span>
-        <span className="text-[10px] font-bold bg-black text-white px-2 py-0.5 whitespace-nowrap">
+        <span className="text-[10px] font-bold bg-foreground text-background px-2 py-0.5 whitespace-nowrap">
           {item.period}
         </span>
       </div>
       <h3 className="text-lg font-black leading-tight mb-1">{item.degree}</h3>
-      <p className="text-sm font-semibold text-gray-700 mb-0.5">
+      <p className="text-sm font-semibold text-foreground/70 mb-0.5">
         {item.institution}
       </p>
-      <p className="text-xs text-gray-400 mb-3">{item.location}</p>
+      <p className="text-xs text-muted-foreground mb-3">{item.location}</p>
       {item.gpa && <p className="text-xs font-bold mb-3">CGPA: {item.gpa}</p>}
       <div className="flex flex-wrap gap-1">
         {item.highlights.map((h) => (
           <span
             key={h}
-            className="text-xs border border-black px-1.5 py-0.5 text-gray-600">
+            className="text-xs border border-foreground px-1.5 py-0.5 text-muted-foreground">
             {h}
           </span>
         ))}
@@ -73,30 +73,30 @@ function EduCard({ item }: { item: EduItem }) {
 
 export function TechStack() {
   return (
-    <section id="education" className="bg-white py-16 border-b-2 border-black">
+    <section id="education" className="bg-background py-16 border-b-2 border-foreground">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-4xl md:text-5xl font-black mb-12">Education</h2>
 
         {/* ── Mobile: left-spine vertical stack ── */}
         <div className="md:hidden relative pl-6">
           {/* spine */}
-          <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-black" />
+          <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-foreground" />
 
           <div className="space-y-6">
             {education.map((item, i) => (
               <div key={i} className="relative">
                 {/* diamond node */}
-                <div className="absolute -left-6.75 top-4 w-3 h-3 border-2 border-black bg-white rotate-45" />
+                <div className="absolute -left-6.75 top-4 w-3 h-3 border-2 border-foreground bg-background rotate-45" />
                 {/* horizontal connector */}
-                <div className="absolute -left-3.75 top-5.25 w-4 h-0.5 bg-black" />
+                <div className="absolute -left-3.75 top-5.25 w-4 h-0.5 bg-foreground" />
 
-                <div className="border-2 border-black bg-white p-4">
+                <div className="border-2 border-foreground bg-background p-4">
                   {/* type + period row */}
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">
+                    <span className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">
                       {item.type}
                     </span>
-                    <span className="text-[10px] font-bold bg-black text-white px-2 py-0.5 whitespace-nowrap">
+                    <span className="text-[10px] font-bold bg-foreground text-background px-2 py-0.5 whitespace-nowrap">
                       {item.period}
                     </span>
                   </div>
@@ -104,10 +104,10 @@ export function TechStack() {
                   <h3 className="text-base font-black leading-tight mb-1">
                     {item.degree}
                   </h3>
-                  <p className="text-sm font-semibold text-gray-700 mb-0.5">
+                  <p className="text-sm font-semibold text-foreground/70 mb-0.5">
                     {item.institution}
                   </p>
-                  <p className="text-xs text-gray-400 mb-3">{item.location}</p>
+                  <p className="text-xs text-muted-foreground mb-3">{item.location}</p>
 
                   {item.gpa && (
                     <p className="text-xs font-bold mb-3">CGPA: {item.gpa}</p>
@@ -117,7 +117,7 @@ export function TechStack() {
                     {item.highlights.map((h) => (
                       <span
                         key={h}
-                        className="text-[11px] border border-black px-2 py-0.5 text-gray-600">
+                        className="text-[11px] border border-foreground px-2 py-0.5 text-muted-foreground">
                         {h}
                       </span>
                     ))}
@@ -131,7 +131,7 @@ export function TechStack() {
         {/* ── Desktop: fishbone alternating left / right ── */}
         <div className="hidden md:block relative">
           {/* vertical spine */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-black -translate-x-px" />
+          <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-foreground -translate-x-px" />
 
           <div className="space-y-10">
             {education.map((item, i) => {
@@ -139,20 +139,20 @@ export function TechStack() {
               return (
                 <div key={i} className="relative flex items-start">
                   {/* diamond node on spine */}
-                  <div className="absolute left-1/2 top-6.5 w-4 h-4 border-2 border-black bg-white rotate-45 -translate-x-1/2 z-10" />
+                  <div className="absolute left-1/2 top-6.5 w-4 h-4 border-2 border-foreground bg-background rotate-45 -translate-x-1/2 z-10" />
 
                   {isRight ? (
                     <>
                       <div className="w-1/2 pr-14" />
                       <div className="w-1/2 pl-14 relative">
-                        <div className="absolute left-0 top-7 w-14 h-0.5 bg-black" />
+                        <div className="absolute left-0 top-7 w-14 h-0.5 bg-foreground" />
                         <EduCard item={item} />
                       </div>
                     </>
                   ) : (
                     <>
                       <div className="w-1/2 pr-14 relative">
-                        <div className="absolute right-0 top-7 w-14 h-0.5 bg-black" />
+                        <div className="absolute right-0 top-7 w-14 h-0.5 bg-foreground" />
                         <EduCard item={item} />
                       </div>
                       <div className="w-1/2 pl-14" />

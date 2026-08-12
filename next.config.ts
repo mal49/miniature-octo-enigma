@@ -22,13 +22,14 @@ const securityHeaders = [
     value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
   },
   {
-    // Content Security Policy — allows self + Google Fonts + Vercel analytics
+    // Content Security Policy — self + Vercel analytics.
+    // Fonts are self-hosted by next/font, so no Google Fonts origins needed.
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "font-src 'self' https://fonts.gstatic.com",
+      "style-src 'self' 'unsafe-inline'",
+      "font-src 'self'",
       "img-src 'self' data: blob: https:",
       "connect-src 'self' https://vercel.live wss://ws-us3.pusher.com https://prod.spline.design",
       "worker-src 'self' blob:",
