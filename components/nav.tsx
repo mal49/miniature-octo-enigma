@@ -7,6 +7,7 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 import { gsap, ScrollTrigger, useIsoLayoutEffect } from "@/lib/gsap";
 
 const NAV_LINKS = [
+  { label: "Services", href: "#services" },
   { label: "Projects", href: "#projects" },
   { label: "Education", href: "#education" },
   { label: "About", href: "#about" },
@@ -66,7 +67,7 @@ export function Nav() {
             <div className="w-9 h-9 overflow-hidden bg-[#F2F0EB] shrink-0">
               <Image
                 src="/me-cartoon-pic.svg"
-                alt="Ikhmal"
+                alt="Neko Labz"
                 width={36}
                 height={36}
                 className="w-full h-full object-cover scale-110"
@@ -74,7 +75,7 @@ export function Nav() {
               />
             </div>
             <span className="hidden sm:block text-sm font-black tracking-widest uppercase">
-              Ikhmal
+              Neko Labz
             </span>
           </a>
 
@@ -129,7 +130,7 @@ export function Nav() {
             {/* Top bar */}
             <div className="flex items-center justify-between px-6 h-16 border-b-2 border-foreground/20 shrink-0">
               <span className="text-foreground text-sm font-black tracking-widest uppercase">
-                Ikhmal
+                Neko Labz
               </span>
               <button
                 onClick={() => setMenuOpen(false)}
@@ -167,7 +168,7 @@ export function Nav() {
 
             {/* Footer note */}
             <div className="px-8 pb-10 text-foreground/20 text-[10px] font-bold tracking-widest uppercase">
-              Portfolio — {new Date().getFullYear()}
+              Neko Labz — {new Date().getFullYear()}
             </div>
           </motion.div>
         )}

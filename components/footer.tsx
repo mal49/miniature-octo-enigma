@@ -5,10 +5,10 @@ export function Footer() {
       <div className="mx-auto max-w-5xl px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
         <div className="flex flex-col items-center gap-1 sm:items-start">
           <span className="text-sm font-semibold text-foreground">
-            © {year} Ikhmal Hanif
+            © {year} Neko Labz Solutions
           </span>
           <span className="text-xs">
-            NEKO LABZ SOLUTIONS · SSM 202603210521 (IP0630481-A)
+            SSM 202603210521 (IP0630481-A) · Kuala Lumpur, Malaysia
           </span>
         </div>
         <span className="text-sm">All rights reserved</span>

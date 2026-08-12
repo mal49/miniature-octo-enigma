@@ -4,10 +4,13 @@ export function Contact() {
   return (
     <section id="contact" className="bg-muted border-b-2 border-foreground py-16">
       <div className="mx-auto max-w-5xl px-6">
-        <h2 className="text-4xl md:text-5xl font-black mb-4">Get in touch</h2>
+        <h2 className="text-4xl md:text-5xl font-black mb-4">
+          Start a project
+        </h2>
         <p className="text-base text-muted-foreground max-w-md mb-8 leading-relaxed">
-          Have a project in mind or want to work together? I&apos;d love to hear
-          from you.
+          Tell me what you&apos;re building, roughly when you need it, and the
+          budget you have in mind — I&apos;ll come back with a quote and a
+          timeline.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3">
@@ -15,7 +18,7 @@ export function Contact() {
             href="mailto:ikhmalhanif60@gmail.com"
             className="inline-flex items-center gap-2 border-2 border-foreground bg-foreground text-background px-5 py-3 text-sm font-bold hover:bg-background hover:text-foreground transition-colors duration-150">
             <Mail className="size-4" />
-            ikhmalhanif60@gmail
+            ikhmalhanif60@gmail.com
           </a>
 
           <a

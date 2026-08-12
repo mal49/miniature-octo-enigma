@@ -4,20 +4,20 @@ import { useRef } from "react";
 import { gsap, ScrollTrigger, SplitText, useIsoLayoutEffect } from "@/lib/gsap";
 
 const TOP_LINKS = [
-  { label: "Home", href: "#hero" },
+  { label: "Services", href: "#services" },
   { label: "Works", href: "#projects" },
-  { label: "Study", href: "#education" },
   { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
 ];
 
 /** Preloader count 0 → 100. Digit reels and the progress line share it. */
 const COUNT_DURATION = 3.6;
 
 const MARQUEE_PHRASES = [
-  "PURPOSEFUL DESIGN",
-  "SHIPPING INTERFACES",
-  "FULL STACK ENGINEERING",
-  "WITH MEANING",
+  "WEB APPS & SITES",
+  "E-COMMERCE & PAYMENTS",
+  "MOBILE & PWA",
+  "MAINTENANCE & CONSULTING",
 ];
 
 /** A column of stacked numerals; yPercent-tweened so the digit rolls. */
@@ -373,8 +373,8 @@ export function Hero({ src, poster }: { src?: string; poster?: string }) {
             data-hero-nav
             className="justify-self-end text-center leading-[1.6] sm:justify-self-center"
           >
-            <div>Ikhmal</div>
-            <div>Hanif</div>
+            <div>Neko</div>
+            <div>Labz</div>
           </div>
 
           {TOP_LINKS.slice(2).map((l) => (
@@ -395,17 +395,25 @@ export function Hero({ src, poster }: { src?: string; poster?: string }) {
             data-hero-label
             className="hidden shrink-0 font-mono text-[9px] uppercase tracking-[0.25em] sm:block"
           >
-            Full Stack
+            Web Studio
           </span>
 
-          <h1 className="flex flex-1 justify-center gap-[0.22em] whitespace-nowrap font-display text-[clamp(4rem,11vw,12rem)] font-semibold leading-[0.85] tracking-[-0.03em]">
-            <span ref={headLeftRef} className="block">
-              Ikhmal
-            </span>
-            <span ref={headRightRef} className="block">
-              Hanif
-            </span>
-          </h1>
+          <div className="flex flex-1 flex-col items-center">
+            <h1 className="flex justify-center gap-[0.22em] whitespace-nowrap font-display text-[clamp(4rem,11vw,12rem)] font-semibold leading-[0.85] tracking-[-0.03em]">
+              <span ref={headLeftRef} className="block">
+                Neko
+              </span>
+              <span ref={headRightRef} className="block">
+                Labz
+              </span>
+            </h1>
+            <p
+              data-hero-label
+              className="mt-4 font-mono text-[9px] uppercase tracking-[0.25em] text-foreground/60"
+            >
+              by Ikhmal Hanif
+            </p>
+          </div>
 
           <span
             data-hero-label
@@ -421,9 +429,9 @@ export function Hero({ src, poster }: { src?: string; poster?: string }) {
             ref={taglineRef}
             className="font-mono text-[9px] uppercase leading-[1.9] tracking-[0.25em]"
           >
-            A Digital
+            Web Studio
             <br />
-            Developer
+            Kuala Lumpur
           </p>
 
           <div
