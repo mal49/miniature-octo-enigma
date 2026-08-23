@@ -63,7 +63,7 @@ export function Cursor() {
     <div
       ref={dotRef}
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[70] hidden h-3 w-3 rounded-full bg-white opacity-0 mix-blend-difference md:block"
+      className="pointer-events-none fixed left-0 top-0 z-[70] hidden h-3 w-3 bg-white opacity-0 mix-blend-difference md:block"
       style={{ willChange: "transform" }}
     />
   );

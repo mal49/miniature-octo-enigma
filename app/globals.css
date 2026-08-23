@@ -1,95 +1,211 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-space-grotesk);
-  --font-display: var(--font-inter-tight);
-  --font-mono: var(--font-jetbrains-mono);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-}
-
+/* ── Design system: three colors, one typeface, hard edges ──────────────── */
 :root {
-  --background: #f2f0eb;
-  --foreground: #0b0b0b;
-  --card: #ffffff;
-  --card-foreground: #0b0b0b;
-  --popover: #ffffff;
-  --popover-foreground: #0b0b0b;
-  --primary: #0b0b0b;
-  --primary-foreground: #f2f0eb;
-  --secondary: #e6e3da;
-  --secondary-foreground: #0b0b0b;
-  --muted: #e9e6dd;
-  --muted-foreground: #6b675f;
-  --accent: #e6e3da;
-  --accent-foreground: #0b0b0b;
-  --destructive: #c0392b;
-  /* Every border in this design is the brutalist 2px outline, not a hairline,
-     so --border tracks the foreground. */
-  --border: #0b0b0b;
-  --input: #d8d4c9;
-  --ring: #0b0b0b;
+  --ink: #141414;
+  --ink-alt: #202020;
+  --paper: #e7e4df;
+  --rule: 1px solid var(--ink);
+  --gutter: 0.875rem;
+
+  /* Legacy token names still referenced by shadcn primitives — all collapse
+     onto the two real colors so nothing can leak a fourth value. */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--paper);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper);
+  --muted-foreground: var(--ink);
+  --accent: var(--paper);
+  --accent-foreground: var(--ink);
+  --destructive: var(--ink);
+  --border: var(--ink);
+  --input: var(--ink);
+  --ring: var(--ink);
   --radius: 0rem;
 }
 
-/* ── Infinite marquee carousel ── */
-@keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-@keyframes marquee-reverse {
-  0%   { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
-}
-.animate-marquee         { animation: marquee         var(--marquee-duration, 30s) linear infinite; }
-.animate-marquee-reverse { animation: marquee-reverse var(--marquee-duration, 24s) linear infinite; }
-.animate-marquee:hover,
-.animate-marquee-reverse:hover { animation-play-state: paused; }
-
-/* Dot pattern background used by the Projects section */
-.dot-bg {
-  background-color: var(--muted);
-  background-image: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--foreground) 18%, transparent) 1.5px,
-    transparent 1.5px
-  );
-  background-size: 20px 20px;
+@theme inline {
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--paper);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--paper);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--ink);
+  --color-primary-foreground: var(--paper);
+  --color-secondary: var(--paper);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--paper);
+  --color-muted-foreground: var(--ink);
+  --color-accent: var(--paper);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--ink);
+  --color-border: var(--ink);
+  --color-input: var(--ink);
+  --color-ring: var(--ink);
+  --font-sans: var(--font-inter-tight);
+  --radius-sm: 0rem;
+  --radius-md: 0rem;
+  --radius-lg: 0rem;
 }
 
 @layer base {
-  * {
-    box-sizing: border-box;
+  * { box-sizing: border-box; }
+
+  /* The whole scale hangs off the root: 16px at a 1440 viewport, fluid either
+     side. Every size below is in rem so the page resizes as one system. */
+  html {
+    font-size: clamp(15px, 1.111vw, 18px);
+    -webkit-text-size-adjust: 100%;
   }
-  /* No `scroll-behavior: smooth` — Lenis owns scrolling and the two fight. */
+
   body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-space-grotesk, system-ui, sans-serif);
-    font-size: 16px;
-    line-height: 1.6;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-inter-tight), "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    /* 13.7px at 1440. Deliberately tiny — the ratio against the display size
+       is the identity, do not raise it. */
+    font-size: 0.856rem;
+    line-height: 1.15;
+    overflow-x: hidden;
+    font-synthesis-weight: none;
   }
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
-    line-height: 1.1;
+
+  h1, h2, h3, h4, h5, h6 { font-weight: 500; line-height: 1; }
+
+  ::selection { background: var(--ink); color: var(--paper); }
+
+  /* 1px ink, no glow — the only focus treatment on the site. */
+  :focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
+
+  img, svg, video { max-width: 100%; }
+}
+
+/* ── Type roles ──────────────────────────────────────────────────────────── */
+.t-display {
+  /* Phones first. At 5.125rem the hero's longest line measures 376px inside a
+     349px mask, and .mask clips rather than wraps, so the headline lost its
+     last glyphs on a 375px screen. */
+  font-size: 3.25rem;
+  line-height: 0.92;
+  font-weight: 500;
+  letter-spacing: -0.03em;   /* -2.458px on 81.94px, measured off the reference */
+}
+@media (min-width: 768px) {
+  .t-display {
+    font-size: 5.125rem;    /* 82px @1440 */
+    line-height: 0.915;     /* 75px */
   }
 }
+.t-display-sm { font-size: 2.75rem; line-height: 0.92; font-weight: 500; letter-spacing: -0.03em; }
+/* About's long-form statement. .t-display is sized for short lines; 82px over
+   400-odd characters is three words a line on a phone, so this steps down. */
+.t-statement { font-size: 2.75rem; line-height: 0.92; font-weight: 500; letter-spacing: -0.03em; }
+@media (min-width: 768px) {
+  .t-statement { font-size: 5.125rem; line-height: 0.915; }
+}
+/* Footnote marks set inside display copy, keyed to the grid below it. */
+.mark { font-size: 0.2em; font-weight: 400; vertical-align: super; margin-right: 0.06em; }
+.t-label { font-size: 0.9rem; line-height: 1; font-weight: 400; }   /* 14.4px */
+.t-accent { font-size: 0.9875rem; line-height: 0.92; color: var(--ink-alt); }
+.t-copy { line-height: 1.35; }
+
+/* ── Reveal mask ─────────────────────────────────────────────────────────────
+   Hides a line while it is still below its resting place. Display type runs a
+   line-height under 1 (0.915), so descenders fall outside the line box and a
+   permanent clip would shear them — "long" would lose the tail of its g. The
+   Reveal drops this class once the tween lands, so nothing is clipped at rest.
+   Padding it instead is not an option: the compensating negative margin would
+   collapse the spacing between the hero's stacked lines. */
+.mask { overflow: hidden; }
+
+/* ── Rules ───────────────────────────────────────────────────────────────── */
+.rule-t { border-top: var(--rule); }
+.rule-b { border-bottom: var(--rule); }
+.rule-l { border-left: var(--rule); }
+.rule-r { border-right: var(--rule); }
+.rule-a { border: var(--rule); }
+
+/* ── Hover: opacity 0.2s ease is the only CSS transition on the reference ── */
+.hov { transition: opacity 0.2s ease; }
+.hov:hover { opacity: 0.5; }
+
+/* a-35 / a-36 — label swaps down from above. Durations, delays and easings are
+   the action list's: in 800ms easeOutCubic (second line +100ms), out 500ms
+   easeInOutCubic (first line +100ms). */
+.swap { position: relative; display: block; height: 1em; overflow: hidden; }
+.swap > span { display: block; }
+.swap > .swap-b { position: absolute; inset: 0; }
+.swap > .swap-a {
+  transform: translateY(0);
+  transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.1s;
+}
+.swap > .swap-b {
+  transform: translateY(-110%);
+  transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.swap:hover > .swap-a,
+.swap:focus-visible > .swap-a {
+  transform: translateY(110%);
+  transition: transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.swap:hover > .swap-b,
+.swap:focus-visible > .swap-b {
+  transform: translateY(0);
+  transition: transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) 0.1s;
+}
+
+/* a-9 / a-10 — underline wipes out on hover, back after a 200ms hold. */
+.wipe { position: relative; display: inline-block; }
+.wipe::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: var(--ink);
+  transform: translateY(0);
+  transition: transform 0.4s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
+}
+.wipe:hover::after {
+  transform: translateY(140%);
+  transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+}
+
+/* ── Touch targets ──────────────────────────────────────────────────────────
+   The type scale is deliberately small, which leaves most links a 14-15px tall
+   hit area — well under the 24px a coarse pointer needs. Extending the target
+   with an overlay rather than padding keeps every measured layout on this page
+   exactly where it sits, and it only applies where the pointer is coarse, so
+   mouse hover areas stay as drawn. Cannot go on a .swap: that clips its own
+   overflow, so the overlay would be cut off — put .tap on a wrapper instead. */
+@media (pointer: coarse) {
+  .tap { position: relative; }
+  .tap::after {
+    content: "";
+    position: absolute;
+    inset-block: -6px;
+    inset-inline: 0;
+  }
+}
+
+/* ── Fill/invert block (used for CTAs) ───────────────────────────────────── */
+.fill { background: var(--ink); color: var(--paper); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+

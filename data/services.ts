@@ -1,12 +1,8 @@
-import { Globe, CreditCard, Smartphone, Wrench } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-
 export interface Service {
   id: string;
   title: string;
   blurb: string;
   points: string[];
-  icon: LucideIcon;
 }
 
 export const services: Service[] = [
@@ -20,7 +16,6 @@ export const services: Service[] = [
       "Dashboards, booking systems, admin panels",
       "Built to be fast, responsive and search-friendly",
     ],
-    icon: Globe,
   },
   {
     id: "payments",
@@ -32,7 +27,6 @@ export const services: Service[] = [
       "CHIP, Bayarcash and Xendit integrations",
       "Webhook handling, receipts and reconciliation",
     ],
-    icon: CreditCard,
   },
   {
     id: "mobile",
@@ -44,7 +38,6 @@ export const services: Service[] = [
       "Mobile-first layouts and touch interactions",
       "Push notifications and offline caching",
     ],
-    icon: Smartphone,
   },
   {
     id: "care",
@@ -56,6 +49,5 @@ export const services: Service[] = [
       "Performance, SEO and accessibility audits",
       "Technical advice on stack and hosting choices",
     ],
-    icon: Wrench,
   },
 ];

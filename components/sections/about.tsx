@@ -1,49 +1,99 @@
-import { ArrowUpRight } from "lucide-react";
+"use client";
 
-const QUICK_LINKS = [
-  { label: "Services", href: "#services" },
-  { label: "Projects", href: "#projects" },
-  { label: "Education", href: "#education" },
-  { label: "Contact", href: "#contact" },
-];
+import { useRef } from "react";
+import { gsap, SplitText, useIsoLayoutEffect } from "@/lib/gsap";
+import { REVEAL } from "@/lib/motion";
+import { Reveal } from "@/components/reveal";
+import { about } from "@/data/content";
 
+/**
+ * `[*]` / `[**]` / `[***]` in the copy become raised footnote marks keyed to
+ * the grid at the foot of the section. String.split with a capturing group
+ * puts every match at an odd index, so parity is the test — a /g regex reused
+ * with .test() carries lastIndex between calls and matches every other time.
+ */
+const marked = (text: string) =>
+  text
+    .split(/(\[\*{1,3}\])/)
+    .map((part, i) =>
+      i % 2 ? (
+        <sup key={i} className="mark">
+          {part}
+        </sup>
+      ) : (
+        part
+      )
+    );
+
+/**
+ * The statement is one flowing block of display type, revealed a line at a
+ * time from behind its own mask (a-5). The lines are not authored: SplitText
+ * measures where the text actually wraps and builds a mask per line, so the
+ * copy can change without anyone re-breaking it by hand.
+ */
 export function About() {
+  const copy = useRef<HTMLParagraphElement>(null);
+
+  useIsoLayoutEffect(() => {
+    const el = copy.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let split: SplitText | null = null;
+    let tween: gsap.core.Tween | null = null;
+    let cancelled = false;
+
+    // Fonts first. Splitting while Inter Tight is still swapping measures the
+    // fallback's line breaks, and the masks end up wrapping the wrong words.
+    document.fonts.ready.then(() => {
+      if (cancelled) return;
+
+      split = SplitText.create(el, { type: "lines", mask: "lines" });
+      tween = gsap.from(split.lines, {
+        yPercent: 100,
+        duration: REVEAL.block.dur,
+        ease: REVEAL.block.ease,
+        stagger: 0.08,
+        scrollTrigger: { trigger: el, start: "top 85%", once: true },
+        // Put the paragraph back once it has landed: the masks are fixed-height
+        // boxes measured at one viewport width, so leaving them in place clips
+        // the copy the moment the window is resized — and shears descenders,
+        // the same reason .mask is dropped after a Reveal.
+        onComplete: () => split?.revert(),
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      tween?.scrollTrigger?.kill();
+      tween?.kill();
+      split?.revert();
+    };
+  }, []);
+
   return (
-    <section
-      id="about"
-      className="bg-background py-10 border-b-2 border-foreground"
-    >
-      <div className="mx-auto max-w-5xl px-6">
-        <p className="text-base max-w-xl mb-8 leading-relaxed">
-          I&apos;m Ikhmal Hanif, a full-stack developer in Kuala Lumpur working
-          under <span className="font-semibold">Neko Labz</span>. I take small
-          business projects end to end: design, build, payments and launch, then
-          stay on afterwards to keep them running.
+    <section id="about" className="rule-b">
+      <div className="p-[var(--gutter)] pb-[86px] pt-[43px]">
+        <Reveal variant="fade" className="t-label mb-[43px]" as="p">
+          About
+        </Reveal>
+
+        <p ref={copy} className="t-statement">
+          {marked(`${about.lead}. ${about.body}`)}
         </p>
 
-        <p className="text-xs font-semibold text-muted-foreground mb-4 tracking-widest uppercase">
-          Quick links
-        </p>
-        <div className="border-2 border-foreground overflow-hidden">
-          <div className="grid grid-cols-2 md:flex">
-            {QUICK_LINKS.map((link, i) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className={[
-                  "flex-1 flex items-center justify-between px-3 sm:px-5 py-4 group hover:bg-foreground hover:text-background transition-colors duration-150",
-                  i % 2 === 1 ? "border-l-2 border-foreground md:border-l-0" : "",
-                  i >= 2 ? "border-t-2 border-foreground md:border-t-0" : "",
-                  i < QUICK_LINKS.length - 1
-                    ? "md:border-r-2 md:border-foreground"
-                    : "",
-                ].join(" ")}>
-                <span className="font-semibold text-sm">{link.label}</span>
-                <ArrowUpRight />
-              </a>
-            ))}
-          </div>
-        </div>
+        <Reveal
+          variant="list"
+          as="dl"
+          className="mt-[86px] grid grid-cols-1 gap-[var(--gutter)] md:grid-cols-3"
+        >
+          {about.footnotes.map((f) => (
+            <div key={f.mark} className="flex gap-[7px]">
+              <dt className="shrink-0">{f.mark}</dt>
+              <dd>{f.text}</dd>
+            </div>
+          ))}
+        </Reveal>
       </div>
     </section>
   );

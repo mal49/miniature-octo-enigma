@@ -1,495 +1,369 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, ScrollTrigger, SplitText, useIsoLayoutEffect } from "@/lib/gsap";
+import { gsap, ScrollTrigger, useIsoLayoutEffect } from "@/lib/gsap";
+import { EASE, HERO_EXIT, INTRO } from "@/lib/motion";
+import { Logotype } from "@/components/logotype";
+import { Nav } from "@/components/nav";
+import { heroEntries, heroHeadline, site } from "@/data/content";
 
-const TOP_LINKS = [
-  { label: "Services", href: "#services" },
-  { label: "Works", href: "#projects" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
-];
-
-/** Preloader count 0 → 100. Digit reels and the progress line share it. */
-const COUNT_DURATION = 3.6;
-
-const MARQUEE_PHRASES = [
-  "WEB APPS & SITES",
-  "E-COMMERCE & PAYMENTS",
-  "MOBILE & PWA",
-  "MAINTENANCE & CONSULTING",
-];
-
-/** A column of stacked numerals; yPercent-tweened so the digit rolls. */
-function DigitColumn({
-  cells,
-  reelRef,
+/**
+ * Hero + intro, built to match the reference section by section:
+ *
+ *   .loading-anim-wrapper   the loader; a timed graphic plus a colour panel
+ *                           that slides up at 1s
+ *   .hero-top-wrapper       logotype, bold ink bar, nav rule
+ *   .hero-home-wrapper      left: modernists list + rule; right: three masked
+ *                           headline lines and the scroll cue
+ *   .anim-fixed-wrapper     ONLY the scroll cue is fixed — the hero itself is
+ *                           an ordinary static section
+ *
+ * One timeline drives all of it, because a-63 is one action list. Every element
+ * time lives in INTRO.
+ *
+ * The one deliberate departure from the reference: rather than the loader
+ * fading out to expose the wordmark, the loading square grows into the exact
+ * box the logotype occupies and the two cross-wipe, so the square is what makes
+ * the word.
+ */
+export function Hero({
+  galleryBtnRef,
+  onOpenGallery,
 }: {
-  cells: string[];
-  reelRef: React.RefObject<HTMLDivElement | null>;
+  galleryBtnRef: React.Ref<HTMLButtonElement>;
+  onOpenGallery: () => void;
 }) {
-  return (
-    <span className="block h-[1em] overflow-hidden">
-      <span ref={reelRef as React.RefObject<HTMLDivElement>} className="block">
-        {cells.map((d, i) => (
-          <span key={i} className="block h-[1em] leading-[1em]">
-            {d}
-          </span>
-        ))}
-      </span>
-    </span>
-  );
-}
-
-/** Overflow-masked label: sits still, duplicate slides in from below on hover. */
-function MaskedLink({ label, href }: { label: string; href: string }) {
-  return (
-    <a
-      href={href}
-      className="group relative block h-[1em] overflow-hidden leading-[1em]"
-    >
-      <span className="block transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-full">
-        {label}
-      </span>
-      <span
-        aria-hidden
-        className="absolute inset-0 block translate-y-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0"
-      >
-        {label}
-      </span>
-    </a>
-  );
-}
-
-export function Hero({ src, poster }: { src?: string; poster?: string }) {
-  const rootRef = useRef<HTMLElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const barRef = useRef<HTMLSpanElement>(null);
-  const hundredsRef = useRef<HTMLDivElement>(null);
-  const tensRef = useRef<HTMLDivElement>(null);
-  const unitsRef = useRef<HTMLDivElement>(null);
-  const mediaWrapRef = useRef<HTMLDivElement>(null);
-  const markRef = useRef<HTMLImageElement>(null);
-  const headLeftRef = useRef<HTMLSpanElement>(null);
-  const headRightRef = useRef<HTMLSpanElement>(null);
-  const taglineRef = useRef<HTMLParagraphElement>(null);
-  const scrollCueRef = useRef<HTMLDivElement>(null);
-  const marqueeTrackRef = useRef<HTMLDivElement>(null);
+  const root = useRef<HTMLDivElement>(null);
 
   useIsoLayoutEffect(() => {
-    const root = rootRef.current;
-    const overlay = overlayRef.current;
-    if (!root || !overlay) return;
+    const el = root.current;
+    if (!el) return;
 
-    // Reduced motion: the markup already renders the final state, so just
-    // drop the curtain overlay. No font gate, no timeline, no infinite marquee.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      overlay.style.display = "none";
-      return;
-    }
+    const q = gsap.utils.selector(el);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let cancelled = false;
-    let charSplit: SplitText | null = null;
-    let lineSplit: SplitText | null = null;
-    const mm = gsap.matchMedia();
-    const cleanups: Array<() => void> = [];
-
-    (async () => {
-      // Splitting before the webfont swaps bakes fallback metrics into the
-      // split. The 1500ms cap is load-bearing: a fonts.ready that never
-      // resolves would leave the curtain down forever.
-      await Promise.race([
-        document.fonts.ready,
-        new Promise((r) => setTimeout(r, 1500)),
-      ]);
-      if (cancelled) return;
-
-      charSplit = new SplitText([headLeftRef.current!, headRightRef.current!], {
-        type: "chars",
-        mask: "chars",
-      });
-      lineSplit = new SplitText(taglineRef.current!, {
-        type: "lines",
-        mask: "lines",
-      });
-
-      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-
-      // ── Preloader: three digit reels roll 0 → 100, 1px line grows ──
-      const roll = (
-        ref: React.RefObject<HTMLDivElement | null>,
-        steps: number
-      ) =>
-        // Each cell is 1em tall, so the reel travels `steps` em — NOT
-        // -100%×steps, which is a share of the whole reel, not one cell.
-        gsap.fromTo(
-          ref.current,
-          { y: 0 },
-          {
-            y: `-${steps}em`,
-            duration: COUNT_DURATION,
-            ease: "power4.inOut",
-          }
-        );
-
-      tl.add(roll(hundredsRef, 1), 0)
-        .add(roll(tensRef, 10), 0)
-        .add(roll(unitsRef, 100), 0)
-        .fromTo(
-          barRef.current,
-          { scaleX: 0 },
-          { scaleX: 1, duration: COUNT_DURATION, ease: "power4.inOut" },
-          0
-        )
-        // ── Curtain lifts by clip-path. No fade. ──
-        .to(
-          overlay,
-          {
-            clipPath: "inset(0 0 100% 0)",
-            duration: 1.1,
-            ease: "power4.inOut",
-            onComplete: () => {
-              overlay.style.display = "none";
-            },
-          },
-          ">"
-        )
-        // ── Hero entrance starts as the curtain is still moving ──
-        .addLabel("enter", "-=0.6");
-
-      if (mediaWrapRef.current) {
-        tl.fromTo(
-          mediaWrapRef.current,
-          { clipPath: "inset(45% 45% 45% 45%)" },
-          { clipPath: "inset(0% 0% 0% 0%)", duration: 1.4, ease: "power4.inOut" },
-          "enter"
-        ).fromTo(
-          "[data-hero-media]",
-          { scale: 1.25 },
-          { scale: 1, duration: 1.4, ease: "power4.inOut" },
-          "<"
-        );
+    const ctx = gsap.context(() => {
+      if (reduce) {
+        gsap.set("[data-loader], [data-seed]", { display: "none" });
+        gsap.set("[data-logotype]", { clipPath: "none", autoAlpha: 1 });
+        return;
       }
 
-      tl.from(
-          charSplit.chars,
-          { yPercent: 110, duration: 1, stagger: 0.02 },
-          "enter+=0.5"
-        )
-        .from(
-          "[data-hero-label]",
-          { autoAlpha: 0, y: 12, duration: 0.9, stagger: 0.06 },
-          ">-0.4"
-        )
-        .from(lineSplit.lines, { yPercent: 110, duration: 1, stagger: 0.08 }, "<")
-        .from(scrollCueRef.current, { autoAlpha: 0, duration: 0.8 }, ">-0.3")
-        .add(() => {
-          gsap.to(scrollCueRef.current, {
-            y: 6,
-            duration: 1.2,
-            ease: "power1.inOut",
-            repeat: -1,
-            yoyo: true,
-          });
-        });
+      const tl = gsap.timeline();
 
-      cleanups.push(() => tl.kill());
+      // ── Loader: a 0 -> 100 count and a progress rule fill the window the
+      //    reference's loading Lottie occupies. Without something running the
+      //    loader just sits there and reads as a hang. ──
+      const counter = { v: 0 };
+      const countNode = q("[data-count]")[0];
 
-      // ── Pin + scrub (desktop only: pinning a 100svh hero on mobile
-      //    fights the collapsing URL bar) ──
-      mm.add("(min-width: 768px)", () => {
-        const scrub = gsap.timeline({
-          scrollTrigger: {
-            trigger: root,
-            start: "top top",
-            end: "+=100%",
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
+      tl.to(
+        counter,
+        {
+          v: 100,
+          duration: INTRO.count.dur,
+          ease: EASE.inOutCubic,
+          onUpdate() {
+            if (countNode) {
+              countNode.textContent = `${String(Math.round(counter.v)).padStart(3, "0")}%`;
+            }
           },
+        },
+        INTRO.count.at
+      )
+        .fromTo(
+          "[data-count-rule]",
+          { scaleX: 0 },
+          { scaleX: 1, duration: INTRO.count.dur, ease: EASE.inOutCubic },
+          INTRO.count.at
+        )
+        .fromTo(
+          "[data-seed]",
+          {
+            xPercent: -50,
+            yPercent: -50 + INTRO.markIn.fromY,
+            scale: INTRO.markIn.fromScale,
+          },
+          {
+            xPercent: -50,
+            yPercent: -50,
+            scale: 1,
+            duration: INTRO.markIn.dur,
+            ease: EASE.inOutCubic,
+          },
+          INTRO.markIn.at
+        )
+        // .loading-bg-color slides up at 1s, revealing the seed and the count
+        .to(
+          "[data-loader-panel]",
+          { yPercent: -100, duration: INTRO.panelUp.dur, ease: EASE.inOutCubic },
+          INTRO.panelUp.at
+        )
+        // The loader's ground leaves; the seed stays, it is not part of it.
+        .to(
+          "[data-loader]",
+          {
+            autoAlpha: 0,
+            duration: INTRO.loaderOut.dur,
+            onComplete() {
+              gsap.set("[data-loader]", { display: "none" });
+            },
+          },
+          INTRO.loaderOut.at
+        );
+
+      // ── The square becomes the wordmark ──
+      // Measured, not hardcoded: the seed is centred in the viewport and the
+      // logotype is in flow, so the distance between them depends on the
+      // viewport. Read both boxes with the seed at its resting size.
+      const seed = q("[data-seed]")[0];
+      const logo = q("[data-logotype]")[0];
+
+      tl.add(() => {
+        if (!seed || !logo) return;
+        const s = seed.getBoundingClientRect();
+        const l = logo.getBoundingClientRect();
+        // The seed is measured mid-timeline, with its scale-to-1 tween already
+        // finished, so this is the true 86px resting square. Scaling happens
+        // about the default 50% origin, which is why matching centres is all
+        // the maths this needs.
+        gsap.to(seed, {
+          x: l.left + l.width / 2 - (s.left + s.width / 2),
+          y: l.top + l.height / 2 - (s.top + s.height / 2),
+          scaleX: l.width / s.width,
+          scaleY: l.height / s.height,
+          duration: INTRO.morph.dur,
+          ease: EASE.inOutQuart,
         });
-        scrub
-          .to(headLeftRef.current, { xPercent: -60, ease: "none" }, 0)
-          .to(headRightRef.current, { xPercent: 60, ease: "none" }, 0)
-          // Nav stays put while pinned — only the side labels fade out.
-          .to(
-            "[data-hero-label]:not([data-hero-nav])",
-            { autoAlpha: 0, ease: "none" },
-            0
-          )
-          // The mark surfaces in the gap the two words leave behind.
-          .fromTo(
-            markRef.current,
-            // Centering lives here, not in a Tailwind -translate: GSAP owns the
-            // transform once it animates scale.
-            { autoAlpha: 0, scale: 0.55, xPercent: -50, yPercent: -50 },
-            { autoAlpha: 1, scale: 1, xPercent: -50, yPercent: -50, ease: "none" },
-            0
-          );
-        if (mediaWrapRef.current) {
-          scrub.to(
-            mediaWrapRef.current,
-            { scale: 1.15, borderRadius: 0, ease: "none" },
-            0
-          );
-        }
-      });
+      }, INTRO.morph.at);
 
-      ScrollTrigger.refresh();
-    })();
-
-    // ── Marquee band: continuous, with scroll velocity folded into timeScale ──
-    const track = marqueeTrackRef.current;
-    if (track) {
-      const loop = gsap.to(track, {
-        xPercent: -50,
-        duration: 24,
-        ease: "none",
-        repeat: -1,
-      });
-      const decay = gsap.delayedCall(0.5, () =>
-        gsap.to(loop, { timeScale: 1, duration: 0.6, ease: "expo.out" })
+      // ── Cross-wipe: the block clears left to right as the letters arrive ──
+      tl.fromTo(
+        "[data-logotype]",
+        { clipPath: "inset(-25% 100% -25% 0)" },
+        {
+          // Negative top/bottom: the wordmark's line-height crops the font's
+          // internal leading, so the caps stand proud of the element's box and
+          // a plain inset(0 ...) would shave them off.
+          clipPath: "inset(-25% 0% -25% 0)",
+          duration: INTRO.wipe.dur,
+          ease: EASE.inOutQuart,
+        },
+        INTRO.wipe.at
+      ).to(
+        "[data-seed]",
+        {
+          clipPath: "inset(0 0 0 100%)",
+          duration: INTRO.wipe.dur,
+          ease: EASE.inOutQuart,
+          onComplete() {
+            gsap.set("[data-seed]", { display: "none" });
+          },
+        },
+        INTRO.wipe.at
       );
-      decay.pause();
 
-      const velTrigger = ScrollTrigger.create({
-        trigger: document.body,
-        start: 0,
-        end: "max",
-        onUpdate: (self) => {
-          const boost = gsap.utils.clamp(
-            -6,
-            6,
-            1 + Math.abs(self.getVelocity()) / 400
-          );
-          gsap.to(loop, {
-            timeScale: boost * (self.direction || 1),
-            duration: 0.4,
-            ease: "expo.out",
-            overwrite: true,
-          });
-          decay.restart(true);
+      // ── The rest of the hero builds off the resolved wordmark ──
+      //
+      // fromTo, not from: under reduced motion the context returns before this
+      // timeline exists, and a `from` would leave the nav with no styles to
+      // restore. The drift is upward from below so the row never crosses the
+      // wordmark on its way in.
+      tl.fromTo(
+        "[data-nav]",
+        { autoAlpha: 0, y: INTRO.nav.fromY },
+        { autoAlpha: 1, y: 0, duration: INTRO.nav.dur, ease: EASE.inOutCubic },
+        INTRO.nav.at
+      ).fromTo(
+        "[data-rule='1']",
+        { scaleY: 0 },
+        { scaleY: 1, duration: INTRO.rule1.dur, ease: EASE.inOutCubic },
+        INTRO.rule1.at
+      )
+        .fromTo(
+          "[data-rule='3']",
+          { scaleX: 0 },
+          { scaleX: 1, duration: INTRO.rule3.dur, ease: EASE.inOutCubic },
+          INTRO.rule3.at
+        )
+        .fromTo(
+          "[data-hero-right]",
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: INTRO.rightArea.dur },
+          INTRO.rightArea.at
+        )
+        .fromTo(
+          "[data-scroll-wrap]",
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: INTRO.scrollCue.dur },
+          INTRO.scrollCue.at
+        )
+        .fromTo(
+          "[data-hero-list]",
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: INTRO.list.dur },
+          INTRO.list.at
+        );
+
+      // ── Headline: three masked lines, y 110% -> 0, 100ms apart ──
+      heroHeadline.forEach((_, i) => {
+        tl.fromTo(
+          `[data-hero-line='${i}']`,
+          { yPercent: INTRO.lines.fromY },
+          {
+            yPercent: 0,
+            duration: INTRO.lines.dur,
+            ease: EASE.outCubic,
+            onComplete() {
+              // Release the clip, or the display type's descenders stay sheared.
+              const line = q(`[data-hero-line='${i}']`)[0];
+              if (line?.parentElement) line.parentElement.style.overflow = "visible";
+            },
+          },
+          INTRO.lines.at[i]
+        );
+      });
+
+      tl.add(() => ScrollTrigger.refresh());
+
+      // ── a-69: the scroll cue is the hero's only fixed element ──
+      const exit = gsap.timeline({
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.6, // Webflow "smoothing: 60"
         },
       });
-
-      cleanups.push(() => {
-        velTrigger.kill();
-        decay.kill();
-        loop.kill();
+      HERO_EXIT.slice(1).forEach((k, i) => {
+        exit.to(
+          "[data-scroll-fixed]",
+          { yPercent: k.y, ease: EASE.linear, duration: k.p - HERO_EXIT[i].p },
+          HERO_EXIT[i].p
+        );
       });
-    }
+      // Pad to 1 unit: a scrubbed timeline is stretched over its trigger's
+      // whole range, so without this every keyframe lands later than its
+      // measured fraction of page scroll.
+      exit.set({}, {}, 1);
+    }, el);
 
-    return () => {
-      cancelled = true;
-      cleanups.forEach((fn) => fn());
-      // matchMedia does not undo SplitText's DOM surgery — revert splits first.
-      charSplit?.revert();
-      lineSplit?.revert();
-      mm.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
-  const year = new Date().getFullYear();
-
   return (
-    <>
-      {/* ── Preloader ── */}
-      {/* SSR'd opaque so no hero content flashes before hydration; without JS
-          it would never lift, so hide it outright in that case. */}
-      <noscript>
-        <style>{`[data-preloader]{display:none!important}`}</style>
-      </noscript>
+    <div ref={root}>
+      {/* ── Loader ground (.loading-anim-wrapper) ── */}
       <div
-        ref={overlayRef}
-        data-preloader
+        data-loader
         aria-hidden
-        className="fixed inset-0 z-[100] bg-background"
-        style={{ clipPath: "inset(0 0 0% 0)" }}
+        className="fixed inset-0 z-50 overflow-hidden bg-[var(--paper)]"
       >
-        <div className="absolute inset-0 flex items-center justify-center font-mono text-[clamp(3rem,12vw,7rem)] font-medium leading-[1em] tracking-tight text-foreground">
-          <DigitColumn cells={["0", "1"]} reelRef={hundredsRef} />
-          <DigitColumn
-            cells={[...Array.from({ length: 10 }, (_, i) => String(i)), "0"]}
-            reelRef={tensRef}
-          />
-          <DigitColumn
-            cells={[
-              ...Array.from({ length: 10 }).flatMap(() =>
-                Array.from({ length: 10 }, (_, i) => String(i))
-              ),
-              "0",
-            ]}
-            reelRef={unitsRef}
-          />
-          <span className="ml-[0.08em] text-[0.5em] leading-[1em]">%</span>
+        {/* .loading-bg-color — ink panel, slides up at 1s */}
+        <div data-loader-panel className="absolute inset-0 bg-[var(--ink)]" />
+
+        <div className="absolute inset-0 grid place-items-center">
+          {/* Reserves the seed's slot so the count sits below it; the seed
+              itself is a sibling of the loader so the ground can leave without
+              taking it. */}
+          <span className="flex flex-col items-center gap-[14px]">
+            <span className="block h-[86px] w-[86px]" />
+            <span data-count className="t-label block tabular-nums">
+              000%
+            </span>
+          </span>
         </div>
+
         <span
-          ref={barRef}
-          className="absolute bottom-0 left-0 h-px w-full origin-left bg-foreground"
+          data-count-rule
+          className="absolute bottom-0 left-0 h-px w-full origin-left bg-[var(--ink)]"
         />
       </div>
 
-      {/* ── Hero ── */}
-      <section
-        id="hero"
-        ref={rootRef}
-        className="relative isolate flex min-h-[100svh] flex-col justify-between overflow-hidden bg-background px-6 py-6 text-foreground md:px-10 md:py-8"
-      >
-        {/* Media stage — only when there is actual media; no placeholder card */}
-        {(src || poster) && (
-          <div
-            ref={mediaWrapRef}
-            data-hero-media-wrap
-            className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[42svh] w-[86vw] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[1.5rem] md:h-[55vh] md:w-[60vw]"
-          >
-            {src ? (
-              <video
-                data-hero-media
-                src={src}
-                poster={poster}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                data-hero-media
-                src={poster}
-                alt=""
-                className="h-full w-full object-cover"
-              />
-            )}
+      {/* The square that becomes the wordmark. Outlives the loader, so it is
+          not a child of it. Sits one layer above. */}
+      <span
+        data-seed
+        aria-hidden
+        className="fixed left-1/2 top-1/2 z-[51] block h-[86px] w-[86px] bg-[var(--ink)]"
+      />
+
+      {/* ── Hero: an ordinary section, not a fixed layer ── */}
+      <section id="top" className="flex min-h-[100svh] flex-col justify-between">
+        {/* .hero-top-wrapper — the wordmark is the first thing on the page. */}
+        <div>
+          <div data-logotype style={{ clipPath: "inset(-25% 100% -25% 0)" }}>
+            <Logotype />
           </div>
-        )}
+        </div>
 
-        {/* Top bar — links spread edge to edge, wordmark centred */}
-        <header className="relative z-10 grid grid-cols-2 items-start font-mono text-[9px] uppercase tracking-[0.25em] sm:grid-cols-5 sm:justify-items-center">
-          {TOP_LINKS.slice(0, 2).map((l, i) => (
-            <div
-              key={l.label}
-              data-hero-label
-              data-hero-nav
-              className={i === 0 ? "justify-self-start" : "hidden sm:block"}
-            >
-              <MaskedLink {...l} />
-            </div>
-          ))}
+        {/* The nav sits under the wordmark and pins to the top from there.
+            It is a direct child of the section, not of the masthead div above:
+            a sticky element can only travel inside its own parent's box, and
+            that box is only as tall as the wordmark — the nav would unstick
+            240px in. The grid below takes flex-1, so it absorbs the free space
+            and justify-between has none left to push this row around with. */}
+        <Nav ref={galleryBtnRef} onOpenGallery={onOpenGallery} />
 
+        {/* .hero-home-wrapper */}
+        <div className="grid flex-1 grid-cols-1 md:grid-cols-[33%_1fr]">
           <div
-            data-hero-label
-            data-hero-nav
-            className="justify-self-end text-center leading-[1.6] sm:justify-self-center"
+            data-hero-list
+            className="relative flex flex-col justify-end gap-[7px] p-[var(--gutter)]"
           >
-            <div>Neko</div>
-            <div>Labz</div>
-          </div>
-
-          {TOP_LINKS.slice(2).map((l) => (
-            <div
-              key={l.label}
-              data-hero-label
-              data-hero-nav
-              className="hidden sm:block"
-            >
-              <MaskedLink {...l} />
-            </div>
-          ))}
-        </header>
-
-        {/* Display type */}
-        <div className="relative z-10 flex items-baseline justify-between gap-4">
-          <span
-            data-hero-label
-            className="hidden shrink-0 font-mono text-[9px] uppercase tracking-[0.25em] sm:block"
-          >
-            Full Stack
-          </span>
-
-          <div className="relative flex flex-1 flex-col items-center">
-            {/* Revealed in the gap the pin-scrub opens between the two words.
-                eslint-disable: a plain img keeps GSAP's transform off next/image's
-                wrapper. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              ref={markRef}
-              src="/neko-labz.png"
-              alt=""
+            <span
+              data-rule="1"
               aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 -z-10 hidden w-[min(22vw,16rem)] opacity-0 md:block"
+              className="absolute right-0 top-0 hidden h-full w-px origin-top bg-[var(--ink)] md:block"
             />
-
-            <h1 className="flex justify-center gap-[0.22em] whitespace-nowrap font-display text-[clamp(4rem,11vw,12rem)] font-semibold leading-[0.85] tracking-[-0.03em]">
-              <span ref={headLeftRef} className="block">
-                Neko
+            <span>Modernists:</span>
+            {heroEntries.map((entry) => (
+              <span key={entry.id}>
+                {entry.id}: {entry.label}
               </span>
-              <span ref={headRightRef} className="block">
-                Labz
-                <span className="ml-[0.06em] align-baseline font-mono text-[0.1em] font-medium uppercase tracking-[0.2em]">
-                  Solutions
-                </span>
-              </span>
-            </h1>
-            <p
-              data-hero-label
-              className="mt-4 font-mono text-[9px] uppercase tracking-[0.25em] text-foreground/60"
-            >
-              by Ikhmal Hanif
-            </p>
+            ))}
           </div>
-
-          <span
-            data-hero-label
-            className="hidden shrink-0 font-mono text-[9px] uppercase tracking-[0.25em] sm:block"
-          >
-            {year}
-          </span>
-        </div>
-
-        {/* Footer row */}
-        <div className="relative z-10 flex items-end justify-between gap-6">
-          <p
-            ref={taglineRef}
-            className="font-mono text-[9px] uppercase leading-[1.9] tracking-[0.25em]"
-          >
-            Developer
-            <br />
-            Kuala Lumpur
-          </p>
 
           <div
-            ref={scrollCueRef}
-            className="flex flex-col items-center gap-2 font-mono text-[9px] uppercase tracking-[0.25em]"
+            data-hero-right
+            className="flex flex-col justify-end p-[var(--gutter)]"
           >
-            <span>Scroll down</span>
-            <span className="h-8 w-px bg-foreground/40" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Marquee band (sibling: pinned children go position:fixed) ── */}
-      <div className="overflow-hidden border-y border-foreground/10 bg-background py-4 text-foreground">
-        <div ref={marqueeTrackRef} className="flex w-max">
-          {Array.from({ length: 2 }).map((_, copy) => (
-            <div key={copy} className="flex shrink-0 items-center">
-              {MARQUEE_PHRASES.map((phrase) => (
-                <span
-                  key={phrase}
-                  className="flex shrink-0 items-center whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.25em]"
-                >
-                  {phrase}
-                  <span aria-hidden className="px-6 text-foreground/30">
-                    ✳
+            <h1 className="t-display">
+              {heroHeadline.map((line, i) => (
+                <span key={line} className="mask block">
+                  <span data-hero-line={i} className="block">
+                    {line}
                   </span>
                 </span>
               ))}
-            </div>
-          ))}
+            </h1>
+          </div>
         </div>
-      </div>
-    </>
+
+        <div className="relative flex items-end justify-between p-[var(--gutter)]">
+          <span
+            data-rule="3"
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-px origin-left bg-[var(--ink)]"
+          />
+          <span data-hero-list>
+            {site.role} &mdash; {site.city}
+          </span>
+
+          {/* .scroll-wrapper.hero — its arrow is the page's only fixed hero
+              element (.anim-fixed-wrapper). */}
+          <a
+            data-scroll-wrap
+            href="#about"
+            className="hov flex items-center gap-[7px]"
+          >
+            Scroll to Explore
+            <span data-scroll-fixed aria-hidden className="block">
+              &darr;
+            </span>
+          </a>
+        </div>
+      </section>
+    </div>
   );
 }
