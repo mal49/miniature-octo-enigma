@@ -1,25 +1,41 @@
-import { Nav } from "@/components/nav";
+"use client";
+
+import { useCallback, useRef, useState } from "react";
+import { GalleryOverlay } from "@/components/gallery-overlay";
 import { Footer } from "@/components/footer";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Services } from "@/components/sections/services";
-import { Projects } from "@/components/sections/projects";
-import { TechStack } from "@/components/sections/education";
-import { Contact } from "@/components/sections/contact";
+import { StatementBand } from "@/components/sections/statement-band";
+import { ProjectSlider } from "@/components/sections/project-slider";
+import { Colophon } from "@/components/sections/colophon";
 
 export default function Home() {
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const galleryBtn = useRef<HTMLButtonElement>(null);
+
+  const openGallery = useCallback(() => setGalleryOpen(true), []);
+
+  const closeGallery = useCallback(() => {
+    setGalleryOpen(false);
+    galleryBtn.current?.focus();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Nav />
+    <>
       <main>
-        <Hero />
+        <Hero
+          galleryBtnRef={galleryBtn}
+          onOpenGallery={openGallery}
+        />
         <About />
         <Services />
-        <Projects />
-        <TechStack />
-        <Contact />
+        <StatementBand />
+        <ProjectSlider />
+        <Colophon />
       </main>
       <Footer />
-    </div>
+      <GalleryOverlay open={galleryOpen} onClose={closeGallery} />
+    </>
   );
 }

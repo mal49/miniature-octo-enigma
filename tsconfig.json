@@ -11,6 +11,9 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    // lib/slider-loop.check.ts is run directly by node --experimental-strip-types,
+    // which needs the .ts extension spelled out in its import.
+    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
