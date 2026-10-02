@@ -106,14 +106,12 @@
   }
 }
 .t-display-sm { font-size: 2.75rem; line-height: 0.92; font-weight: 500; letter-spacing: -0.03em; }
-/* About's long-form statement. .t-display is sized for short lines; 82px over
-   400-odd characters is three words a line on a phone, so this steps down. */
+/* About's statement. .t-display at 82px is three words a line on a phone, so
+   this steps down. */
 .t-statement { font-size: 2.75rem; line-height: 0.92; font-weight: 500; letter-spacing: -0.03em; }
 @media (min-width: 768px) {
   .t-statement { font-size: 5.125rem; line-height: 0.915; }
 }
-/* Footnote marks set inside display copy, keyed to the grid below it. */
-.mark { font-size: 0.2em; font-weight: 400; vertical-align: super; margin-right: 0.06em; }
 .t-label { font-size: 0.9rem; line-height: 1; font-weight: 400; }   /* 14.4px */
 .t-accent { font-size: 0.9875rem; line-height: 0.92; color: var(--ink-alt); }
 .t-copy { line-height: 1.35; }

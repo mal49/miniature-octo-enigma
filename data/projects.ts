@@ -12,6 +12,18 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "photostrips",
+    title: "Photostrips by dearguest",
+    description:
+      "An ordering site that turns gig, festival and event photos into printed photostrips: upload photos, pick a concert template, pay with FPX, TNG or card, then collect at a pop-up or get it posted.",
+    tech: ["React", "Cloudflare Workers", "Payments"],
+    github: "",
+    demo: "https://photostrips.dearguest.my/",
+    image: "/projects/photostrips.png",
+    gradient: "from-rose-500/20 via-pink-500/10 to-transparent",
+    featured: true,
+  },
+  {
     id: "camera-rental",
     title: "Awapixie Camera Rental Service",
     description:

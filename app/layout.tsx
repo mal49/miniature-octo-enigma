@@ -18,7 +18,7 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ikhmalhanif.xyz"),
+  metadataBase: new URL("https://www.ikhmalhanif.xyz"),
   title: {
     default: `${site.fullName} · Full-Stack Web Development, Malaysia`,
     template: `%s | ${site.name}`,
@@ -33,19 +33,20 @@ export const metadata: Metadata = {
     "FPX DuitNow",
     "Freelance web developer",
   ],
-  authors: [{ name: site.author, url: "https://ikhmalhanif.xyz" }],
+  authors: [{ name: site.author, url: "https://www.ikhmalhanif.xyz" }],
   creator: site.author,
   publisher: site.fullName,
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://ikhmalhanif.xyz",
+    url: "https://www.ikhmalhanif.xyz",
     images: [
       {
         url: "/og-neko-labz-solutions.png",
         width: 1200,
         height: 630,
         alt: "Neko Labz Solutions",
+        type: "image/png",
       },
     ],
     title: `${site.fullName} · Full-Stack Web Development, Malaysia`,
