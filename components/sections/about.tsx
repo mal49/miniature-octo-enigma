@@ -7,25 +7,6 @@ import { Reveal } from "@/components/reveal";
 import { about } from "@/data/content";
 
 /**
- * `[*]` / `[**]` / `[***]` in the copy become raised footnote marks keyed to
- * the grid at the foot of the section. String.split with a capturing group
- * puts every match at an odd index, so parity is the test — a /g regex reused
- * with .test() carries lastIndex between calls and matches every other time.
- */
-const marked = (text: string) =>
-  text
-    .split(/(\[\*{1,3}\])/)
-    .map((part, i) =>
-      i % 2 ? (
-        <sup key={i} className="mark">
-          {part}
-        </sup>
-      ) : (
-        part
-      )
-    );
-
-/**
  * The statement is one flowing block of display type, revealed a line at a
  * time from behind its own mask (a-5). The lines are not authored: SplitText
  * measures where the text actually wraps and builds a mask per line, so the
@@ -73,27 +54,14 @@ export function About() {
 
   return (
     <section id="about" className="rule-b">
-      <div className="p-[var(--gutter)] pb-[86px] pt-[43px]">
+      <div className="p-[var(--gutter)] pb-[129px] pt-[43px]">
         <Reveal variant="fade" className="t-label mb-[43px]" as="p">
           About
         </Reveal>
 
-        <p ref={copy} className="t-statement">
-          {marked(`${about.lead}. ${about.body}`)}
+        <p ref={copy} className="t-statement max-w-[22ch]">
+          {about}
         </p>
-
-        <Reveal
-          variant="list"
-          as="dl"
-          className="mt-[86px] grid grid-cols-1 gap-[var(--gutter)] md:grid-cols-3"
-        >
-          {about.footnotes.map((f) => (
-            <div key={f.mark} className="flex gap-[7px]">
-              <dt className="shrink-0">{f.mark}</dt>
-              <dd>{f.text}</dd>
-            </div>
-          ))}
-        </Reveal>
       </div>
     </section>
   );

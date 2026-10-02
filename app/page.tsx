@@ -7,7 +7,7 @@ import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Services } from "@/components/sections/services";
 import { StatementBand } from "@/components/sections/statement-band";
-import { ProjectSlider } from "@/components/sections/project-slider";
+import { ProjectGrid } from "@/components/sections/project-grid";
 import { Colophon } from "@/components/sections/colophon";
 
 export default function Home() {
@@ -31,7 +31,7 @@ export default function Home() {
         <About />
         <Services />
         <StatementBand />
-        <ProjectSlider />
+        <ProjectGrid />
         <Colophon />
       </main>
       <Footer />
