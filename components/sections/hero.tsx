@@ -26,6 +26,19 @@ import { heroEntries, heroHeadline, site } from "@/data/content";
  * box the logotype occupies and the two cross-wipe, so the square is what makes
  * the word.
  */
+
+/** The intro runs once per tab session. sessionStorage rather than module
+ *  scope: the nav's route links are plain anchors, so coming back to / is a
+ *  full load that would reset a module variable. */
+const INTRO_KEY = "intro-played";
+const introPlayed = () => {
+  try {
+    return sessionStorage.getItem(INTRO_KEY) === "1";
+  } catch {
+    return false;
+  }
+};
+
 export function Hero({
   galleryBtnRef,
   onOpenGallery,
@@ -41,15 +54,52 @@ export function Hero({
 
     const q = gsap.utils.selector(el);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const played = introPlayed();
 
     const ctx = gsap.context(() => {
-      if (reduce) {
+      // Reduced motion, or the intro already ran this session: land on the
+      // end state.
+      if (reduce || played) {
         gsap.set("[data-loader], [data-seed]", { display: "none" });
         gsap.set("[data-logotype]", { clipPath: "none", autoAlpha: 1 });
-        return;
+        q("[data-hero-line]").forEach((line) => {
+          if (line.parentElement) line.parentElement.style.overflow = "visible";
+        });
       }
+      if (reduce) return;
 
-      const tl = gsap.timeline();
+      // ── a-69: the scroll cue is the hero's only fixed element ──
+      const exit = gsap.timeline({
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.6, // Webflow "smoothing: 60"
+        },
+      });
+      HERO_EXIT.slice(1).forEach((k, i) => {
+        exit.to(
+          "[data-scroll-fixed]",
+          { yPercent: k.y, ease: EASE.linear, duration: k.p - HERO_EXIT[i].p },
+          HERO_EXIT[i].p
+        );
+      });
+      // Pad to 1 unit: a scrubbed timeline is stretched over its trigger's
+      // whole range, so without this every keyframe lands later than its
+      // measured fraction of page scroll.
+      exit.set({}, {}, 1);
+
+      if (played) return;
+
+      // Flagged on completion, not on start: StrictMode's mount/unmount/mount
+      // in dev would otherwise skip the intro on the second mount.
+      const tl = gsap.timeline({
+        onComplete() {
+          try {
+            sessionStorage.setItem(INTRO_KEY, "1");
+          } catch {}
+        },
+      });
 
       // ── Loader: a 0 -> 100 count and a progress rule fill the window the
       //    reference's loading Lottie occupies. Without something running the
@@ -225,27 +275,6 @@ export function Hero({
       });
 
       tl.add(() => ScrollTrigger.refresh());
-
-      // ── a-69: the scroll cue is the hero's only fixed element ──
-      const exit = gsap.timeline({
-        scrollTrigger: {
-          trigger: document.body,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.6, // Webflow "smoothing: 60"
-        },
-      });
-      HERO_EXIT.slice(1).forEach((k, i) => {
-        exit.to(
-          "[data-scroll-fixed]",
-          { yPercent: k.y, ease: EASE.linear, duration: k.p - HERO_EXIT[i].p },
-          HERO_EXIT[i].p
-        );
-      });
-      // Pad to 1 unit: a scrubbed timeline is stretched over its trigger's
-      // whole range, so without this every keyframe lands later than its
-      // measured fraction of page scroll.
-      exit.set({}, {}, 1);
     }, el);
 
     return () => ctx.revert();
