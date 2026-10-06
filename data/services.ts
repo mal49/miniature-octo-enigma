@@ -17,7 +17,7 @@ export const services: Service[] = [
       "Marketing sites, landing pages, company profiles",
       "Built to be fast, responsive and search-friendly",
     ],
-    price: "From RM 1,500",
+    price: "From RM 1,000",
   },
   {
     id: "payments",
