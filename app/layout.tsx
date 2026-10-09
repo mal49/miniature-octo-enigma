@@ -42,10 +42,17 @@ export const metadata: Metadata = {
     url: "https://www.ikhmalhanif.xyz",
     images: [
       {
-        url: "/og-neko-labz-solutions.png",
+        url: "/og-neko-labz.png",
         width: 1200,
         height: 630,
         alt: "Neko Labz Solutions",
+        type: "image/png",
+      },
+      {
+        url: "/og-neko-labz-logo.png",
+        width: 1200,
+        height: 1200,
+        alt: "Neko Labz Solutions logo",
         type: "image/png",
       },
     ],
@@ -59,8 +66,8 @@ export const metadata: Metadata = {
     description: `Web apps, online stores and payment integrations for small businesses. A one-person software developer in ${site.city}.`,
     images: [
       {
-        url: "/og-neko-labz-solutions.png",
-        alt: `${site.fullName} logo`,
+        url: "/og-neko-labz.png",
+        alt: site.fullName,
       },
     ],
   },
