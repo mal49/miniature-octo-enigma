@@ -37,6 +37,13 @@ To pin it, add an environment variable `NODE_VERSION = 22`.
 
 Cloudflare detects `package-lock.json` and runs `npm clean-install` automatically before the build.
 
+### If the project was created as a Worker instead of Pages
+
+If the dashboard asks for a **Deploy command** (`npx wrangler deploy`), it's a Workers project. That also
+works: `wrangler.jsonc` tells Wrangler to upload `out/` as static assets. Without that file, Wrangler
+tries to convert the app to OpenNext and the deploy fails. Keep the Worker name in `wrangler.jsonc`
+the same as the project name in the dashboard.
+
 ## 4. Automatic deployments
 
 - Every push to `main` triggers a **production** deployment.
