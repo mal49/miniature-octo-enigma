@@ -1,25 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    {
-      "name": "porto",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "dev"
-      ],
-      "port": 3000,
-      "autoPort": true
-    },
-    {
-      "name": "porto-prod",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "start"
-      ],
-      "port": 3100,
-      "autoPort": true
-    }
+    { "name": "porto", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 3000 },
+    { "name": "porto-static", "runtimeExecutable": "python", "runtimeArgs": ["-m", "http.server", "3100", "-d", "out"], "port": 3100 }
   ]
 }
